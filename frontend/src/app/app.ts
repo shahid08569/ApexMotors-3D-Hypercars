@@ -24,10 +24,12 @@ interface ScreenHotspot {
   styleUrl: './app.scss'
 })
 export class App implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('canvasRef', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('canvasRef') canvasRef?: ElementRef<HTMLCanvasElement>;
 
   // Data signals and state
   public cars = signal<CarModel[]>([]);
+  public filteredCars = signal<CarModel[]>([]);
+  public selectedBrandFilter = signal<string>('All');
   public selectedCar = signal<CarModel | null>(null);
   public selectedColor = signal<ColorOption | null>(null);
   public activeCameraPreset = signal<CameraPreset>('orbit');
@@ -43,6 +45,7 @@ export class App implements OnInit, AfterViewInit, OnDestroy {
   public isMuted = signal<boolean>(false);
   public isRevving = signal<boolean>(false);
   public isCustomizerOpen = signal<boolean>(true);
+  public is3DReady = signal<boolean>(false);
 
   // Modals
   public isTestDriveModalOpen = signal<boolean>(false);
@@ -56,7 +59,7 @@ export class App implements OnInit, AfterViewInit, OnDestroy {
     phone: '',
     preferredDate: '',
     carId: '',
-    dealershipLocation: 'Dubai Marina Luxury Atelier',
+    dealershipLocation: 'Dubai Flagship Atelier',
     notes: ''
   };
 
@@ -80,8 +83,15 @@ export class App implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     this.carService.getCars().subscribe(cars => {
       this.cars.set(cars);
-      if (cars.length > 0) {
-        this.selectCar(cars[0]);
+      this.filteredCars.set(cars);
+      if (cars.length > 0 && !this.selectedCar()) {
+        this.selectedCar.set(cars[0]);
+        this.selectedColor.set(cars[0].availableColors[0] || null);
+        this.testDriveForm.carId = cars[0].id;
+        this.customBuildForm.carId = cars[0].id;
+        this.customBuildForm.colorName = cars[0].availableColors[0]?.name || '';
+        this.customBuildForm.colorHex = cars[0].availableColors[0]?.hex || '';
+        this.customBuildForm.estimatedTotal = cars[0].startingPrice;
       }
     });
 
@@ -91,33 +101,31 @@ export class App implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    if (this.selectedCar()) {
-      this.init3D(this.selectedCar()!);
-    }
+    setTimeout(() => {
+      if (this.canvasRef && this.selectedCar()) {
+        this.threeShowroom.init(this.canvasRef, this.selectedCar()!);
+        this.is3DReady.set(true);
 
-    // Connect 3D Hotspot updates to 2D UI overlay
-    this.threeShowroom.onHotspotsUpdated = (positions) => {
-      const car = this.selectedCar();
-      if (!car) return;
+        this.threeShowroom.onHotspotsUpdated = (positions) => {
+          const car = this.selectedCar();
+          if (!car) return;
 
-      const mapped: ScreenHotspot[] = positions.map(pos => {
-        const hs = car.hotspots.find(h => h.id === pos.id);
-        return {
-          id: pos.id,
-          title: hs?.title || '',
-          description: hs?.description || '',
-          category: hs?.category || 'Feature',
-          x: pos.x,
-          y: pos.y,
-          visible: pos.visible
+          const mapped: ScreenHotspot[] = positions.map(pos => {
+            const hs = car.hotspots?.find(h => h.id === pos.id);
+            return {
+              id: pos.id,
+              title: hs?.title || '',
+              description: hs?.description || '',
+              category: hs?.category || 'Feature',
+              x: pos.x,
+              y: pos.y,
+              visible: pos.visible
+            };
+          });
+          this.screenHotspots.set(mapped);
         };
-      });
-      this.screenHotspots.set(mapped);
-    };
-  }
-
-  private init3D(car: CarModel): void {
-    this.threeShowroom.init(this.canvasRef, car);
+      }
+    }, 100);
   }
 
   public selectCar(car: CarModel): void {
@@ -126,16 +134,34 @@ export class App implements OnInit, AfterViewInit, OnDestroy {
     this.activeCameraPreset.set('orbit');
     this.selectedHotspot.set(null);
 
-    // Update form defaults
     this.testDriveForm.carId = car.id;
     this.customBuildForm.carId = car.id;
     this.customBuildForm.colorName = car.availableColors[0]?.name || '';
     this.customBuildForm.colorHex = car.availableColors[0]?.hex || '';
     this.customBuildForm.estimatedTotal = car.startingPrice;
 
-    // Trigger 3D regeneration
-    this.threeShowroom.buildCarModel(car);
-    this.threeShowroom.setCameraPreset('orbit');
+    if (this.is3DReady()) {
+      this.threeShowroom.buildCarModel(car);
+      this.threeShowroom.setCameraPreset('orbit');
+    }
+    this.audioService.playClick();
+  }
+
+  public loadAndScrollTo3D(car: CarModel): void {
+    this.selectCar(car);
+    const showroomSection = document.getElementById('showroom-section');
+    if (showroomSection) {
+      showroomSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  public filterByBrand(brand: string): void {
+    this.selectedBrandFilter.set(brand);
+    if (brand === 'All') {
+      this.filteredCars.set(this.cars());
+    } else {
+      this.filteredCars.set(this.cars().filter(c => c.brand.toLowerCase() === brand.toLowerCase()));
+    }
     this.audioService.playClick();
   }
 
@@ -184,7 +210,6 @@ export class App implements OnInit, AfterViewInit, OnDestroy {
     const hs = this.selectedCar()?.hotspots.find(h => h.id === hotspotId);
     if (hs) {
       this.selectedHotspot.set(hs);
-      // Focus camera on that component
       if (hs.category === 'Engine') this.setCameraView('engine');
       else if (hs.category === 'Cockpit') this.setCameraView('cockpit');
       else if (hs.category === 'Aero') this.setCameraView('aero');
@@ -197,7 +222,14 @@ export class App implements OnInit, AfterViewInit, OnDestroy {
     this.selectedHotspot.set(null);
   }
 
-  // Modals handling
+  public scrollTo(sectionId: string): void {
+    const el = document.getElementById(sectionId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+      this.audioService.playClick();
+    }
+  }
+
   public openTestDriveModal(): void {
     this.modalSuccessMessage.set(null);
     this.isTestDriveModalOpen.set(true);
@@ -210,7 +242,7 @@ export class App implements OnInit, AfterViewInit, OnDestroy {
 
   public submitTestDrive(): void {
     if (!this.testDriveForm.fullName || !this.testDriveForm.email) {
-      alert('Please enter your full name and email address.');
+      alert('Please enter your full name and email.');
       return;
     }
     this.carService.submitTestDrive(this.testDriveForm).subscribe(res => {

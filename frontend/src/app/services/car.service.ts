@@ -21,6 +21,11 @@ const FALLBACK_CARS: CarModel[] = [
     weightKg: 1570,
     driveType: 'e-4WD (All-Wheel Drive)',
     description: 'The SF90 Stradale represents an epochal leap for Ferrari: hypercar performance married to groundbreaking hybrid plug-in engineering.',
+    imageUrl: 'https://images.unsplash.com/photo-1592198084033-aade902d1aae?auto=format&fit=crop&w=1200&q=80',
+    galleryUrls: [
+      'https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80'
+    ],
     stockCount: 2,
     availableColors: [
       { name: 'Rosso Corsa (Classic Red)', hex: '#dc0616', metallic: 0.88, roughness: 0.18 },
@@ -57,6 +62,10 @@ const FALLBACK_CARS: CarModel[] = [
     weightKg: 1772,
     driveType: 'E-AWD Electric Vectoring',
     description: 'A breathtaking revolution: pure naturally aspirated screaming V12 revving to 9,500 RPM blended with futuristic electric torque-vectoring prowess.',
+    imageUrl: 'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=1200&q=80',
+    galleryUrls: [
+      'https://images.unsplash.com/photo-1541348263662-e0c8de4259ba?auto=format&fit=crop&w=800&q=80'
+    ],
     stockCount: 1,
     availableColors: [
       { name: 'Verde Mantis (Neon Green)', hex: '#00e653', metallic: 0.82, roughness: 0.19 },
@@ -93,6 +102,10 @@ const FALLBACK_CARS: CarModel[] = [
     weightKg: 1995,
     driveType: 'Permanent All-Wheel Drive',
     description: 'A masterpiece with no equal on earth. Engineered to effortlessly shatter physical boundaries while wrapped in handcrafted haute-couture luxury.',
+    imageUrl: 'https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?auto=format&fit=crop&w=1200&q=80',
+    galleryUrls: [
+      'https://images.unsplash.com/photo-1508974239320-0a029497e820?auto=format&fit=crop&w=800&q=80'
+    ],
     stockCount: 1,
     availableColors: [
       { name: 'French Racing Blue & Atlantic Blue', hex: '#1e4d94', metallic: 0.9, roughness: 0.17 },
@@ -128,6 +141,10 @@ const FALLBACK_CARS: CarModel[] = [
     weightKg: 1280,
     driveType: 'Rear-Wheel Drive (RWD)',
     description: 'Crafted by Horacio Pagani as an immortal work of art, defying screens and digital trends with exposed manual gear linkages and Carbo-Titanium metallurgy.',
+    imageUrl: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1200&q=80',
+    galleryUrls: [
+      'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=800&q=80'
+    ],
     stockCount: 1,
     availableColors: [
       { name: 'Rinascimento Gold', hex: '#c89a4b', metallic: 0.96, roughness: 0.15 },
@@ -163,6 +180,10 @@ const FALLBACK_CARS: CarModel[] = [
     weightKg: 1450,
     driveType: 'Rear-Wheel Drive (RWD)',
     description: 'A radical motorsport projectile. Equipped with central radiator concept, Formula 1 style Drag Reduction System (DRS), and 860 kg of downforce.',
+    imageUrl: 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1200&q=80',
+    galleryUrls: [
+      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80'
+    ],
     stockCount: 3,
     availableColors: [
       { name: 'Guards Red & Pyro Red Accents', hex: '#d5001c', metallic: 0.85, roughness: 0.18 },
@@ -199,6 +220,10 @@ const FALLBACK_CARS: CarModel[] = [
     weightKg: 1941,
     driveType: 'Rear-Wheel Drive (Drag Optimized RWD)',
     description: 'The undisputed king of the quarter-mile. 0-60 mph in a terrifying 1.66 seconds, pulling over 2.0 G of acceleration with front wheels lifting into the air.',
+    imageUrl: 'https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=1200&q=80',
+    galleryUrls: [
+      'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=800&q=80'
+    ],
     stockCount: 2,
     availableColors: [
       { name: 'TorRed with Satin Black Hood', hex: '#c21807', metallic: 0.8, roughness: 0.22 },

@@ -43,6 +43,8 @@ public class CarModel
     public int WeightKg { get; set; }
     public string DriveType { get; set; } = "AWD";
     public string Description { get; set; } = string.Empty;
+    public string ImageUrl { get; set; } = string.Empty;
+    public List<string> GalleryUrls { get; set; } = new();
     public int StockCount { get; set; }
     public List<ColorOption> AvailableColors { get; set; } = new();
     public List<InteriorTheme> InteriorThemes { get; set; } = new();

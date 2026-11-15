@@ -1,425 +1,760 @@
-<div class="showroom-wrapper" [class.night-mode]="isNightMode()">
-  <!-- 1. FULL VIEWPORT 3D CANVAS -->
-  <canvas #canvasRef class="webgl-canvas"></canvas>
+<div class="website-container" [class.night-mode]="isNightMode()">
 
-  <!-- 2. TOP LUXURY NAVIGATION -->
-  <header class="top-nav glass-panel">
-    <div class="brand-container">
+  <!-- ====================================================
+       1. LUXURY STICKY NAVBAR
+       ==================================================== -->
+  <header class="main-navbar glass-panel">
+    <div class="nav-left">
       <div class="emblem-shield">
-        <svg viewBox="0 0 24 24" class="shield-icon">
+        <svg viewBox="0 0 24 24" class="shield-svg">
           <polygon points="12,2 22,6 20,18 12,22 4,18 2,6" />
         </svg>
       </div>
-      <div class="brand-text">
-        <span class="apex-title">APEX HYPERCARS</span>
-        <span class="apex-sub">VIRTUAL ATELIER & SHOWROOM</span>
+      <div class="brand-info">
+        <span class="brand-name">APEX MOTORS</span>
+        <span class="brand-tag">EXOTIC HYPERCAR ATELIER</span>
       </div>
     </div>
 
-    <!-- Quick Marque Switchers -->
-    <div class="marque-chips">
-      @for (c of cars(); track c.id) {
-        <button
-          class="marque-btn"
-          [class.active]="selectedCar()?.id === c.id"
-          (click)="selectCar(c)"
-        >
-          {{ c.brand }}
-        </button>
-      }
-    </div>
+    <nav class="nav-links">
+      <a (click)="scrollTo('showroom-section')" class="nav-link active">3D Showroom</a>
+      <a (click)="scrollTo('collection-section')" class="nav-link">Hypercar Collection</a>
+      <a (click)="scrollTo('atelier-section')" class="nav-link">Bespoke Atelier</a>
+      <a (click)="scrollTo('heritage-section')" class="nav-link">Heritage</a>
+      <a (click)="scrollTo('ateliers-section')" class="nav-link">Global Locations</a>
+      <a (click)="scrollTo('inquiry-section')" class="nav-link">VIP Concierge</a>
+    </nav>
 
-    <!-- Showroom Actions & Toggles -->
-    <div class="nav-controls">
-      <!-- Cockpit Hero Action -->
-      <button
-        class="action-btn hero-cockpit-btn"
-        [class.active]="activeCameraPreset() === 'cockpit'"
-        (click)="setCameraView(activeCameraPreset() === 'cockpit' ? 'orbit' : 'cockpit')"
-      >
-        <span class="btn-icon">💺</span>
-        <span class="btn-label">{{ activeCameraPreset() === 'cockpit' ? 'EXIT COCKPIT' : 'ZOOM INSIDE COCKPIT' }}</span>
-      </button>
-
-      <!-- Headlights -->
-      <button
-        class="icon-btn"
-        [class.active]="areHeadlightsOn()"
-        (click)="toggleHeadlights()"
-        title="Toggle Headlights"
-      >
-        💡
-      </button>
-
-      <!-- Day / Cyber Night Mode -->
-      <button
-        class="icon-btn"
-        [class.active]="isNightMode()"
-        (click)="toggleShowroomLighting()"
-        title="Daylight Studio / Cyber Night"
-      >
-        {{ isNightMode() ? '🌙' : '☀️' }}
-      </button>
-
-      <!-- Audio Toggle -->
-      <button
-        class="icon-btn"
-        [class.active]="!isMuted()"
-        (click)="toggleAudio()"
-        title="Sound FX"
-      >
-        {{ isMuted() ? '🔇' : '🔊' }}
+    <div class="nav-right">
+      <button class="nav-cta-btn" (click)="openTestDriveModal()">
+        <span>BOOK TEST DRIVE</span>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
       </button>
     </div>
   </header>
 
-  <!-- 3. SCREEN-PROJECTED 3D HOTSPOTS -->
-  <div class="hotspots-overlay">
-    @for (hs of screenHotspots(); track hs.id) {
-      @if (hs.visible) {
-        <div
-          class="hotspot-pin"
-          [style.left.px]="hs.x"
-          [style.top.px]="hs.y"
-          (click)="openHotspot(hs.id)"
-        >
-          <div class="pin-pulse"></div>
-          <div class="pin-core"></div>
-          <div class="pin-label">{{ hs.title }}</div>
-        </div>
-      }
-    }
-  </div>
+  <!-- ====================================================
+       2. HERO SECTION: 3D VIRTUAL SHOWROOM STAGE
+       ==================================================== -->
+  <section id="showroom-section" class="showroom-hero">
+    <!-- 3D Canvas Background -->
+    <div class="canvas-viewport">
+      <canvas #canvasRef class="three-canvas"></canvas>
 
-  <!-- 4. LEFT FLOATING TELEMETRY CARD -->
-  @if (selectedCar(); as car) {
-    <aside class="left-telemetry glass-panel">
-      <div class="car-badge-row">
-        <span class="brand-pill">{{ car.brand }}</span>
-        <span class="stock-pill">{{ car.stockCount }} IN ATELIER</span>
+      <!-- 3D Hotspot Screen Overlay -->
+      <div class="hotspots-container">
+        @for (hs of screenHotspots(); track hs.id) {
+          @if (hs.visible) {
+            <div
+              class="hotspot-marker"
+              [style.left.px]="hs.x"
+              [style.top.px]="hs.y"
+              (click)="openHotspot(hs.id)"
+            >
+              <div class="pulse-ring"></div>
+              <div class="core-dot"></div>
+              <span class="marker-text">{{ hs.title }}</span>
+            </div>
+          }
+        }
       </div>
-
-      <h1 class="car-title">{{ car.name }}</h1>
-      <p class="car-tagline">{{ car.tagline }}</p>
-
-      <div class="metrics-grid">
-        <div class="metric-card">
-          <span class="metric-val">{{ car.horsepower }}</span>
-          <span class="metric-unit">HORSEPOWER</span>
-        </div>
-        <div class="metric-card">
-          <span class="metric-val">{{ car.zeroToHundredSeconds }}s</span>
-          <span class="metric-unit">0-100 KM/H</span>
-        </div>
-        <div class="metric-card">
-          <span class="metric-val">{{ car.topSpeedKmh }}</span>
-          <span class="metric-unit">TOP KM/H</span>
-        </div>
-        <div class="metric-card">
-          <span class="metric-val">{{ car.torqueNm }}</span>
-          <span class="metric-unit">TORQUE NM</span>
-        </div>
-      </div>
-
-      <div class="spec-detail-box">
-        <div class="spec-row">
-          <span class="spec-label">Engine:</span>
-          <span class="spec-value">{{ car.engine }}</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-label">Transmission:</span>
-          <span class="spec-value">{{ car.transmission }}</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-label">Drivetrain:</span>
-          <span class="spec-value">{{ car.driveType }}</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-label">Price:</span>
-          <span class="spec-value price-tag">${{ car.startingPrice.toLocaleString() }} {{ car.currency }}</span>
-        </div>
-      </div>
-
-      <div class="cta-actions">
-        <!-- VIP Test Drive -->
-        <button class="primary-btn" (click)="openTestDriveModal()">
-          <span>REQUEST VIP TEST DRIVE</span>
-          <span class="btn-arrow">→</span>
-        </button>
-
-        <!-- Engine Rev Sound -->
-        <button
-          class="rev-btn"
-          [class.revving]="isRevving()"
-          (mousedown)="onRevEngineStart()"
-          (mouseup)="onRevEngineEnd()"
-          (touchstart)="onRevEngineStart()"
-          (touchend)="onRevEngineEnd()"
-        >
-          <span class="rev-icon">🔥</span>
-          <span>HOLD TO REV ENGINE</span>
-          <div class="sound-wave">
-            <span></span><span></span><span></span><span></span>
-          </div>
-        </button>
-      </div>
-    </aside>
-  }
-
-  <!-- 5. RIGHT FLOATING 3D CUSTOMIZER DRAWER -->
-  <aside class="right-customizer glass-panel" [class.collapsed]="!isCustomizerOpen()">
-    <div class="drawer-header">
-      <span class="drawer-title">3D BESPOKE ATELIER</span>
-      <button class="collapse-toggle" (click)="isCustomizerOpen.set(!isCustomizerOpen())">
-        {{ isCustomizerOpen() ? '✕' : '⚙️' }}
-      </button>
     </div>
 
-    @if (isCustomizerOpen() && selectedCar(); as car) {
-      <div class="drawer-content">
-        <!-- Camera View Presets -->
-        <div class="customizer-section">
-          <label class="section-label">CAMERA PERSPECTIVE</label>
-          <div class="preset-chips">
-            <button
-              class="preset-chip"
-              [class.active]="activeCameraPreset() === 'orbit'"
-              (click)="setCameraView('orbit')"
-            >
-              Orbit 360°
-            </button>
-            <button
-              class="preset-chip"
-              [class.active]="activeCameraPreset() === 'cockpit'"
-              (click)="setCameraView('cockpit')"
-            >
-              Cockpit View
-            </button>
-            <button
-              class="preset-chip"
-              [class.active]="activeCameraPreset() === 'engine'"
-              (click)="setCameraView('engine')"
-            >
-              Engine Bay
-            </button>
-            <button
-              class="preset-chip"
-              [class.active]="activeCameraPreset() === 'aero'"
-              (click)="setCameraView('aero')"
-            >
-              Active Aero
-            </button>
-            <button
-              class="preset-chip"
-              [class.active]="activeCameraPreset() === 'brakes'"
-              (click)="setCameraView('brakes')"
-            >
-              Brembo Brakes
-            </button>
+    <!-- Top Showroom Action Bar -->
+    <div class="showroom-topbar">
+      <!-- Quick Marque Switcher -->
+      <div class="marque-selector glass-panel">
+        @for (c of cars(); track c.id) {
+          <button
+            class="marque-tab"
+            [class.active]="selectedCar()?.id === c.id"
+            (click)="selectCar(c)"
+          >
+            {{ c.brand }}
+          </button>
+        }
+      </div>
+
+      <!-- 3D Stage Quick Controls -->
+      <div class="controls-toolbar glass-panel">
+        <!-- Cockpit Zoom Button -->
+        <button
+          class="toolbar-btn cockpit-hero-btn"
+          [class.active]="activeCameraPreset() === 'cockpit'"
+          (click)="setCameraView(activeCameraPreset() === 'cockpit' ? 'orbit' : 'cockpit')"
+        >
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="m4.93 4.93 4.24 4.24M14.83 9.17l4.24-4.24M14.83 14.83l4.24 4.24M9.17 14.83l-4.24 4.24"/>
+          </svg>
+          <span>{{ activeCameraPreset() === 'cockpit' ? 'EXIT COCKPIT' : 'ZOOM INSIDE COCKPIT' }}</span>
+        </button>
+
+        <!-- Headlights -->
+        <button
+          class="toolbar-btn icon-only"
+          [class.active]="areHeadlightsOn()"
+          (click)="toggleHeadlights()"
+          title="Toggle Headlights"
+        >
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/>
+            <path d="M9 18h6M10 22h4"/>
+          </svg>
+        </button>
+
+        <!-- Day / Night Mode -->
+        <button
+          class="toolbar-btn icon-only"
+          [class.active]="isNightMode()"
+          (click)="toggleShowroomLighting()"
+          title="Studio Daylight / Cyber Night"
+        >
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+          </svg>
+        </button>
+
+        <!-- Audio Mute -->
+        <button
+          class="toolbar-btn icon-only"
+          [class.active]="!isMuted()"
+          (click)="toggleAudio()"
+          title="Audio Acoustics"
+        >
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Left Telemetry Panel -->
+    @if (selectedCar(); as car) {
+      <div class="left-hero-panel glass-panel">
+        <div class="badge-tag-row">
+          <span class="gold-badge">{{ car.brand }}</span>
+          <span class="cyan-badge">ALLOCATION: {{ car.stockCount }} REMAINING</span>
+        </div>
+
+        <h1 class="hero-car-title">{{ car.name }}</h1>
+        <p class="hero-car-tagline">{{ car.tagline }}</p>
+
+        <!-- Real-time Metrics -->
+        <div class="hero-metrics">
+          <div class="metric-box">
+            <span class="val">{{ car.horsepower }}</span>
+            <span class="lbl">HORSEPOWER</span>
+          </div>
+          <div class="metric-box">
+            <span class="val">{{ car.zeroToHundredSeconds }}s</span>
+            <span class="lbl">0-100 KM/H</span>
+          </div>
+          <div class="metric-box">
+            <span class="val">{{ car.topSpeedKmh }}</span>
+            <span class="lbl">TOP SPEED KM/H</span>
+          </div>
+          <div class="metric-box">
+            <span class="val">{{ car.torqueNm }}</span>
+            <span class="lbl">TORQUE NM</span>
           </div>
         </div>
 
-        <!-- Exterior Paint Colors -->
-        <div class="customizer-section">
-          <div class="section-label-row">
-            <label class="section-label">EXTERIOR BESPOKE PAINT</label>
-            <span class="color-name-badge">{{ selectedColor()?.name }}</span>
+        <!-- Telemetry Summary -->
+        <div class="summary-list">
+          <div class="item">
+            <span class="key">Powertrain:</span>
+            <span class="val">{{ car.engine }}</span>
           </div>
-          <div class="color-swatches">
-            @for (c of car.availableColors; track c.hex) {
-              <div
-                class="color-swatch"
-                [class.selected]="selectedColor()?.hex === c.hex"
-                [style.background]="c.hex"
-                (click)="selectColor(c)"
-                [title]="c.name"
-              >
-                <div class="swatch-shine"></div>
-              </div>
-            }
+          <div class="item">
+            <span class="key">Transmission:</span>
+            <span class="val">{{ car.transmission }}</span>
           </div>
-        </div>
-
-        <!-- Interior Trim Options -->
-        <div class="customizer-section">
-          <label class="section-label">INTERIOR CABIN TRIM</label>
-          <div class="interior-themes">
-            @for (t of car.interiorThemes; track t.name) {
-              <div class="interior-card">
-                <div class="theme-dots">
-                  <span class="dot" [style.background]="t.primaryHex"></span>
-                  <span class="dot" [style.background]="t.accentHex"></span>
-                </div>
-                <div class="theme-info">
-                  <span class="theme-title">{{ t.name }}</span>
-                  <span class="theme-material">{{ t.material }}</span>
-                </div>
-              </div>
-            }
+          <div class="item">
+            <span class="key">Drive Architecture:</span>
+            <span class="val">{{ car.driveType }}</span>
+          </div>
+          <div class="item">
+            <span class="key">Starting Commission:</span>
+            <span class="val gold-price">${{ car.startingPrice.toLocaleString() }} USD</span>
           </div>
         </div>
 
-        <!-- Order Bespoke Build CTA -->
-        <div class="customizer-footer">
-          <button class="order-btn" (click)="openCustomBuildModal()">
-            <span>SAVE & ORDER BESPOKE SPEC</span>
-            <span class="btn-arrow">⚡</span>
+        <!-- Call to Actions -->
+        <div class="hero-actions">
+          <button class="gold-cta-btn" (click)="openTestDriveModal()">
+            <span>SCHEDULE PRIVATE VIEWING</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+
+          <!-- Interactive Acoustic Rev -->
+          <button
+            class="acoustic-rev-btn"
+            [class.active]="isRevving()"
+            (mousedown)="onRevEngineStart()"
+            (mouseup)="onRevEngineEnd()"
+            (touchstart)="onRevEngineStart()"
+            (touchend)="onRevEngineEnd()"
+          >
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+            </svg>
+            <span>HOLD TO REV ENGINE</span>
+            <div class="rev-frequency">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
           </button>
         </div>
       </div>
     }
-  </aside>
 
-  <!-- 6. BOTTOM CAR SWITCHER CAROUSEL -->
-  <footer class="bottom-carousel glass-panel">
-    <div class="carousel-track">
-      @for (c of cars(); track c.id) {
-        <div
-          class="car-card"
-          [class.active]="selectedCar()?.id === c.id"
-          (click)="selectCar(c)"
-        >
-          <div class="card-brand">{{ c.brand }}</div>
-          <div class="card-title">{{ c.name }}</div>
-          <div class="card-specs">
-            <span>{{ c.horsepower }} HP</span>
-            <span class="dot-sep">•</span>
-            <span>{{ c.zeroToHundredSeconds }}s</span>
-            <span class="dot-sep">•</span>
-            <span class="card-price">${{ (c.startingPrice / 1000).toFixed(0) }}k</span>
+    <!-- Right 3D Customizer Atelier Panel -->
+    <div class="right-hero-panel glass-panel" [class.minimized]="!isCustomizerOpen()">
+      <div class="panel-header">
+        <span class="title">3D BESPOKE ATELIER</span>
+        <button class="toggle-icon-btn" (click)="isCustomizerOpen.set(!isCustomizerOpen())">
+          {{ isCustomizerOpen() ? '✕' : '⚙️' }}
+        </button>
+      </div>
+
+      @if (isCustomizerOpen() && selectedCar(); as car) {
+        <div class="panel-body">
+          <!-- Camera Presets -->
+          <div class="custom-block">
+            <label class="block-title">CAMERA ANGLE</label>
+            <div class="chip-row">
+              <button
+                class="view-chip"
+                [class.active]="activeCameraPreset() === 'orbit'"
+                (click)="setCameraView('orbit')"
+              >
+                Orbit 360°
+              </button>
+              <button
+                class="view-chip"
+                [class.active]="activeCameraPreset() === 'cockpit'"
+                (click)="setCameraView('cockpit')"
+              >
+                Cockpit Interior
+              </button>
+              <button
+                class="view-chip"
+                [class.active]="activeCameraPreset() === 'engine'"
+                (click)="setCameraView('engine')"
+              >
+                Engine Bay
+              </button>
+              <button
+                class="view-chip"
+                [class.active]="activeCameraPreset() === 'aero'"
+                (click)="setCameraView('aero')"
+              >
+                Active Aero
+              </button>
+              <button
+                class="view-chip"
+                [class.active]="activeCameraPreset() === 'brakes'"
+                (click)="setCameraView('brakes')"
+              >
+                Brembo Brakes
+              </button>
+            </div>
           </div>
+
+          <!-- Color Swatches -->
+          <div class="custom-block">
+            <div class="label-with-name">
+              <label class="block-title">EXTERIOR PAINT</label>
+              <span class="active-color-name">{{ selectedColor()?.name }}</span>
+            </div>
+            <div class="swatches-grid">
+              @for (c of car.availableColors; track c.hex) {
+                <div
+                  class="paint-swatch"
+                  [class.selected]="selectedColor()?.hex === c.hex"
+                  [style.background]="c.hex"
+                  (click)="selectColor(c)"
+                  [title]="c.name"
+                >
+                  <div class="swatch-glint"></div>
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- Interior Themes -->
+          <div class="custom-block">
+            <label class="block-title">CABIN INTERIOR</label>
+            <div class="interior-list">
+              @for (t of car.interiorThemes; track t.name) {
+                <div class="interior-item">
+                  <div class="dots-wrapper">
+                    <span class="d-circle" [style.background]="t.primaryHex"></span>
+                    <span class="d-circle" [style.background]="t.accentHex"></span>
+                  </div>
+                  <div class="i-meta">
+                    <span class="i-name">{{ t.name }}</span>
+                    <span class="i-sub">{{ t.material }}</span>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- Commission Order Button -->
+          <button class="order-commission-btn" (click)="openCustomBuildModal()">
+            <span>COMMISSION THIS SPECIFICATION</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>
+            </svg>
+          </button>
         </div>
       }
     </div>
-  </footer>
 
-  <!-- 7. HOTSPOT DETAIL DRAWER / POPUP -->
-  @if (selectedHotspot(); as hs) {
-    <div class="hotspot-drawer glass-panel">
-      <div class="drawer-top">
-        <span class="hotspot-badge">{{ hs.category }}</span>
-        <button class="close-btn" (click)="closeHotspot()">✕</button>
-      </div>
-      <h3 class="hotspot-title">{{ hs.title }}</h3>
-      <p class="hotspot-desc">{{ hs.description }}</p>
-      <div class="drawer-actions">
-        <button class="orbit-back-btn" (click)="setCameraView('orbit'); closeHotspot()">
-          BACK TO ORBIT
+    <!-- Hotspot Drawer Modal -->
+    @if (selectedHotspot(); as hs) {
+      <div class="hotspot-telemetry-card glass-panel">
+        <div class="card-head">
+          <span class="cat-pill">{{ hs.category }}</span>
+          <button class="dismiss-btn" (click)="closeHotspot()">✕</button>
+        </div>
+        <h4 class="h-title">{{ hs.title }}</h4>
+        <p class="h-desc">{{ hs.description }}</p>
+        <button class="h-back-btn" (click)="setCameraView('orbit'); closeHotspot()">
+          RETURN TO 360° VIEW
         </button>
       </div>
-    </div>
-  }
+    }
+  </section>
 
-  <!-- 8. VIP TEST DRIVE MODAL -->
-  @if (isTestDriveModalOpen()) {
-    <div class="modal-backdrop" (click)="closeTestDriveModal()">
-      <div class="modal-card glass-panel" (click)="$event.stopPropagation()">
-        <button class="modal-close" (click)="closeTestDriveModal()">✕</button>
-        <div class="modal-header">
-          <span class="modal-pretitle">VIP CONCIERGE SERVICE</span>
-          <h2 class="modal-title">Book A Test Drive</h2>
-          <p class="modal-subtitle">Experience the raw engineering of the {{ selectedCar()?.name }} on track or city tour.</p>
+  <!-- ====================================================
+       3. COLLECTION & INVENTORY SECTION (REAL IMAGES & SPECS)
+       ==================================================== -->
+  <section id="collection-section" class="collection-section">
+    <div class="section-container">
+      <div class="section-heading-row">
+        <div class="heading-left">
+          <span class="section-eyebrow">WORLD-CLASS INVENTORY</span>
+          <h2 class="section-title">The Apex Collection</h2>
+          <p class="section-desc">Hand-selected, low-mileage exotic machinery from Maranello, Sant'Agata, Molsheim, San Cesario sul Panaro, Stuttgart, and Detroit.</p>
+        </div>
+
+        <!-- Brand Filter Pills -->
+        <div class="brand-filters">
+          <button class="filter-pill" [class.active]="selectedBrandFilter() === 'All'" (click)="filterByBrand('All')">All Marquees</button>
+          <button class="filter-pill" [class.active]="selectedBrandFilter() === 'Ferrari'" (click)="filterByBrand('Ferrari')">Ferrari</button>
+          <button class="filter-pill" [class.active]="selectedBrandFilter() === 'Lamborghini'" (click)="filterByBrand('Lamborghini')">Lamborghini</button>
+          <button class="filter-pill" [class.active]="selectedBrandFilter() === 'Bugatti'" (click)="filterByBrand('Bugatti')">Bugatti</button>
+          <button class="filter-pill" [class.active]="selectedBrandFilter() === 'Pagani'" (click)="filterByBrand('Pagani')">Pagani</button>
+          <button class="filter-pill" [class.active]="selectedBrandFilter() === 'Porsche'" (click)="filterByBrand('Porsche')">Porsche</button>
+          <button class="filter-pill" [class.active]="selectedBrandFilter() === 'Dodge'" (click)="filterByBrand('Dodge')">Dodge</button>
+        </div>
+      </div>
+
+      <!-- Supercar Cards Grid with Real HD Pictures -->
+      <div class="cards-grid">
+        @for (car of filteredCars(); track car.id) {
+          <div class="hypercar-card glass-panel">
+            <div class="card-image-wrap">
+              <img [src]="car.imageUrl" [alt]="car.name" class="car-photo" loading="lazy" />
+              <div class="image-gradient-overlay"></div>
+              <span class="brand-watermark">{{ car.brand }}</span>
+              <span class="price-chip">${{ car.startingPrice.toLocaleString() }} USD</span>
+            </div>
+
+            <div class="card-info">
+              <div class="card-header">
+                <span class="marque-label">{{ car.brand }}</span>
+                <span class="stock-status">{{ car.stockCount }} IN SHOWROOM</span>
+              </div>
+
+              <h3 class="car-name">{{ car.name }}</h3>
+              <p class="car-short-desc">{{ car.tagline }}</p>
+
+              <!-- Quick Specs Row -->
+              <div class="specs-ribbon">
+                <div class="spec-col">
+                  <span class="num">{{ car.horsepower }}</span>
+                  <span class="unit">HP</span>
+                </div>
+                <div class="spec-col">
+                  <span class="num">{{ car.zeroToHundredSeconds }}s</span>
+                  <span class="unit">0-100</span>
+                </div>
+                <div class="spec-col">
+                  <span class="num">{{ car.topSpeedKmh }}</span>
+                  <span class="unit">KM/H</span>
+                </div>
+                <div class="spec-col">
+                  <span class="num">{{ car.weightKg }}</span>
+                  <span class="unit">KG</span>
+                </div>
+              </div>
+
+              <div class="engine-spec-line">
+                <span class="icon">⚙️</span>
+                <span class="text">{{ car.engine }}</span>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="card-buttons">
+                <button class="load-3d-btn" (click)="loadAndScrollTo3D(car)">
+                  <span>INSPECT IN 3D</span>
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 8v8M8 12h8"/>
+                  </svg>
+                </button>
+                <button class="test-drive-card-btn" (click)="selectCar(car); openTestDriveModal()">
+                  <span>TEST DRIVE</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       4. BESPOKE ATELIER & COMPARISON SECTION
+       ==================================================== -->
+  <section id="atelier-section" class="atelier-section">
+    <div class="section-container">
+      <div class="atelier-banner glass-panel">
+        <div class="banner-content">
+          <span class="section-eyebrow">TAILOR-MADE CRAFTSMANSHIP</span>
+          <h2 class="atelier-title">Personalized Haute-Couture Automotive Commissioning</h2>
+          <p class="atelier-desc">
+            At Apex Motors, no two hypercars are alike. Our bespoke atelier works in direct partnership with factory designers in Maranello, Sant'Agata Bolognese, and Molsheim. From exposed tinted carbon weave and custom paint-to-sample pigments to bespoke leather embroidery and titanium exhaust finishes.
+          </p>
+
+          <div class="atelier-features-grid">
+            <div class="feature-item">
+              <span class="f-num">01</span>
+              <h4>3D Virtual Hologram</h4>
+              <p>Preview every angle, cockpit seam, and wheel finish in real-time WebGL before atelier fabrication.</p>
+            </div>
+            <div class="feature-item">
+              <span class="f-num">02</span>
+              <h4>Factory Allocation</h4>
+              <p>Guaranteed production slots for VIP clientele directly linked to manufacturer assembly lines.</p>
+            </div>
+            <div class="feature-item">
+              <span class="f-num">03</span>
+              <h4>Global Air Freight</h4>
+              <p>Climate-controlled air transport to Dubai, London, Zurich, Monaco, Tokyo, and New York.</p>
+            </div>
+          </div>
+
+          <div class="banner-cta">
+            <button class="gold-cta-btn" (click)="openCustomBuildModal()">
+              <span>START BESPOKE COMMISSION</span>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       5. HERITAGE & DEALERSHIP STORY SECTION
+       ==================================================== -->
+  <section id="heritage-section" class="heritage-section">
+    <div class="section-container">
+      <div class="heritage-grid">
+        <div class="heritage-text">
+          <span class="section-eyebrow">THE APEX HERITAGE</span>
+          <h2 class="section-title">Two Decades of Supplying the World's Rarest Hypercars</h2>
+          <p class="p-lead">
+            Founded with a passion for mechanical perfection, Apex Motors has curated, traded, and commissioned over $500M in hypercars for royalty, collectors, and racing drivers worldwide.
+          </p>
+          <p class="p-body">
+            Every vehicle in our showroom undergoes a meticulous 180-point factory certification, dyno verification, and carbon monocoque ultrasound scan to ensure zero defect tolerance.
+          </p>
+
+          <div class="stats-counter-row">
+            <div class="stat-col">
+              <span class="s-val">200+</span>
+              <span class="s-lbl">Hypercars Delivered</span>
+            </div>
+            <div class="stat-col">
+              <span class="s-val">100%</span>
+              <span class="s-lbl">Provenance Guaranteed</span>
+            </div>
+            <div class="stat-col">
+              <span class="s-val">5</span>
+              <span class="s-lbl">Global VIP Ateliers</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="heritage-imagery">
+          <div class="image-card-main glass-panel">
+            <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1000&q=80" alt="Showroom Lounge" class="heritage-img" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       6. GLOBAL SHOWROOM ATELIERS
+       ==================================================== -->
+  <section id="ateliers-section" class="locations-section">
+    <div class="section-container">
+      <div class="text-center-heading">
+        <span class="section-eyebrow">OUR FLAGSHIPS</span>
+        <h2 class="section-title">Worldwide Private Showroom Suites</h2>
+        <p class="section-desc">By private appointment only. Experience white-glove hospitality in our state-of-the-art showrooms.</p>
+      </div>
+
+      <div class="locations-grid">
+        <div class="location-card glass-panel">
+          <div class="loc-header">
+            <h3>Dubai Flagship</h3>
+            <span class="status-dot">OPEN</span>
+          </div>
+          <p class="loc-address">Sheikh Zayed Road, DIFC Gate Avenue, Dubai, UAE</p>
+          <span class="contact-line">+971 4 800 APEX</span>
+        </div>
+
+        <div class="location-card glass-panel">
+          <div class="loc-header">
+            <h3>London Mayfair</h3>
+            <span class="status-dot">OPEN</span>
+          </div>
+          <p class="loc-address">14 Berkeley Square, Mayfair, London W1J 6BQ, UK</p>
+          <span class="contact-line">+44 20 7946 0991</span>
+        </div>
+
+        <div class="location-card glass-panel">
+          <div class="loc-header">
+            <h3>Monaco Atelier</h3>
+            <span class="status-dot">OPEN</span>
+          </div>
+          <p class="loc-address">Avenue des Spélugues, Monte-Carlo 98000, Monaco</p>
+          <span class="contact-line">+377 98 97 00 20</span>
+        </div>
+
+        <div class="location-card glass-panel">
+          <div class="loc-header">
+            <h3>Beverly Hills Suite</h3>
+            <span class="status-dot">OPEN</span>
+          </div>
+          <p class="loc-address">Wilshire Boulevard, Beverly Hills, CA 90212, USA</p>
+          <span class="contact-line">+1 310 555 0199</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       7. VIP TEST DRIVE INQUIRY FORM (Connected to .NET API)
+       ==================================================== -->
+  <section id="inquiry-section" class="inquiry-section">
+    <div class="section-container">
+      <div class="inquiry-card glass-panel">
+        <div class="inquiry-header">
+          <span class="section-eyebrow">EXCLUSIVE ARRANGEMENTS</span>
+          <h2 class="section-title">Arrange A Private Test Drive & Inspection</h2>
+          <p class="section-desc">Experience the ferocious acceleration and surgical dynamics of your preferred hypercar under track or highway conditions.</p>
         </div>
 
         @if (modalSuccessMessage()) {
-          <div class="success-banner">
-            <span class="check-icon">✓</span>
+          <div class="success-alert">
+            <span class="icon">✓</span>
             <p>{{ modalSuccessMessage() }}</p>
           </div>
+        }
+
+        <form class="inquiry-form-grid" (ngSubmit)="submitTestDrive()">
+          <div class="form-field">
+            <label>Full Legal Name</label>
+            <input type="text" [(ngModel)]="testDriveForm.fullName" name="fullName" placeholder="Shahid Hussain" required />
+          </div>
+
+          <div class="form-field">
+            <label>VIP Email Address</label>
+            <input type="email" [(ngModel)]="testDriveForm.email" name="email" placeholder="shahid@example.com" required />
+          </div>
+
+          <div class="form-field">
+            <label>Phone / WhatsApp</label>
+            <input type="tel" [(ngModel)]="testDriveForm.phone" name="phone" placeholder="+971 50 123 4567" />
+          </div>
+
+          <div class="form-field">
+            <label>Select Hypercar</label>
+            <select [(ngModel)]="testDriveForm.carId" name="carId">
+              @for (c of cars(); track c.id) {
+                <option [value]="c.id">{{ c.name }} ({{ c.brand }})</option>
+              }
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label>Preferred Atelier Location</label>
+            <select [(ngModel)]="testDriveForm.dealershipLocation" name="dealershipLocation">
+              <option value="Dubai Flagship Atelier">Dubai Flagship Atelier (UAE)</option>
+              <option value="London Mayfair Showroom">London Mayfair Showroom (UK)</option>
+              <option value="Monaco Monte Carlo Concierge">Monaco Monte Carlo Concierge</option>
+              <option value="Beverly Hills Private Suite">Beverly Hills Private Suite (USA)</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label>Preferred Date</label>
+            <input type="date" [(ngModel)]="testDriveForm.preferredDate" name="preferredDate" />
+          </div>
+
+          <div class="form-field full-width">
+            <label>Special Instructions / Track Security Escort</label>
+            <textarea [(ngModel)]="testDriveForm.notes" name="notes" rows="3" placeholder="FIA homologated racing helmet, closed circuit test, private security chauffeur..."></textarea>
+          </div>
+
+          <div class="form-field full-width">
+            <button type="submit" class="submit-inquiry-btn">
+              <span>TRANSMIT TEST DRIVE REQUEST</span>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       8. LUXURY FOOTER
+       ==================================================== -->
+  <footer class="main-footer">
+    <div class="section-container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="f-emblem">
+            <svg viewBox="0 0 24 24" class="shield-svg">
+              <polygon points="12,2 22,6 20,18 12,22 4,18 2,6" />
+            </svg>
+          </div>
+          <span class="f-title">APEX MOTORS</span>
+          <p class="f-tag">The world's premier virtual & physical dealership for ultra-rare hypercars.</p>
+        </div>
+
+        <div class="footer-links-group">
+          <h5>SHOWROOM</h5>
+          <a (click)="selectCar(cars()[0]); scrollTo('showroom-section')">Ferrari SF90 Stradale</a>
+          <a (click)="selectCar(cars()[1]); scrollTo('showroom-section')">Lamborghini Revuelto</a>
+          <a (click)="selectCar(cars()[2]); scrollTo('showroom-section')">Bugatti Chiron Super Sport</a>
+          <a (click)="selectCar(cars()[3]); scrollTo('showroom-section')">Pagani Utopia</a>
+        </div>
+
+        <div class="footer-links-group">
+          <h5>SERVICES</h5>
+          <a (click)="scrollTo('atelier-section')">Bespoke 3D Atelier</a>
+          <a (click)="openTestDriveModal()">VIP Track Test Drives</a>
+          <a (click)="scrollTo('heritage-section')">Ultra-Rare Sourcing</a>
+          <a (click)="scrollTo('ateliers-section')">Private Jet Escorts</a>
+        </div>
+
+        <div class="footer-links-group">
+          <h5>CONTACT</h5>
+          <p>Dubai DIFC Gate Avenue, UAE</p>
+          <p>concierge&#64;apexmotors.com</p>
+          <p>+971 4 800 APEX</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 APEX MOTORS LLC. All Rights Reserved. Engineered for Shahid Hussain (shahid08569).</p>
+        <div class="footer-tech-badges">
+          <span class="t-badge">ANGULAR 22</span>
+          <span class="t-badge">THREE.JS WEBGL</span>
+          <span class="t-badge">.NET 10 REST API</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ====================================================
+       MODALS: TEST DRIVE & CUSTOM BUILD
+       ==================================================== -->
+  @if (isTestDriveModalOpen()) {
+    <div class="modal-overlay" (click)="closeTestDriveModal()">
+      <div class="modal-window glass-panel" (click)="$event.stopPropagation()">
+        <button class="close-x" (click)="closeTestDriveModal()">✕</button>
+        <span class="pre-title">CONCIERGE BOOKING</span>
+        <h3 class="m-title">VIP Test Drive: {{ selectedCar()?.name }}</h3>
+        <p class="m-desc">Complete the dossier below to dispatch private transport and arrange circuit access.</p>
+
+        @if (modalSuccessMessage()) {
+          <div class="m-success-banner">✓ {{ modalSuccessMessage() }}</div>
         } @else {
-          <form class="modal-form" (ngSubmit)="submitTestDrive()">
-            <div class="form-group">
-              <label>Full Legal Name</label>
+          <form class="m-form" (ngSubmit)="submitTestDrive()">
+            <div class="m-field">
+              <label>Full Name</label>
               <input type="text" [(ngModel)]="testDriveForm.fullName" name="fullName" placeholder="Shahid Hussain" required />
             </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label>Email Address</label>
-                <input type="email" [(ngModel)]="testDriveForm.email" name="email" placeholder="shahid@example.com" required />
-              </div>
-              <div class="form-group">
-                <label>Phone / WhatsApp</label>
-                <input type="tel" [(ngModel)]="testDriveForm.phone" name="phone" placeholder="+971 50 123 4567" />
-              </div>
+            <div class="m-field">
+              <label>Email</label>
+              <input type="email" [(ngModel)]="testDriveForm.email" name="email" placeholder="shahid@example.com" required />
             </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label>Preferred Date</label>
-                <input type="date" [(ngModel)]="testDriveForm.preferredDate" name="preferredDate" />
-              </div>
-              <div class="form-group">
-                <label>Dealership Location</label>
-                <select [(ngModel)]="testDriveForm.dealershipLocation" name="dealershipLocation">
-                  <option value="Dubai Flagship Atelier">Dubai Flagship Atelier</option>
-                  <option value="London Mayfair Showroom">London Mayfair Showroom</option>
-                  <option value="Monaco Monte Carlo Concierge">Monaco Monte Carlo Concierge</option>
-                  <option value="Beverly Hills Private Suite">Beverly Hills Private Suite</option>
-                </select>
-              </div>
+            <div class="m-field">
+              <label>Phone / WhatsApp</label>
+              <input type="tel" [(ngModel)]="testDriveForm.phone" name="phone" placeholder="+971 50 123 4567" />
             </div>
-
-            <div class="form-group">
-              <label>Special Requests or Track Preparation</label>
-              <textarea [(ngModel)]="testDriveForm.notes" name="notes" rows="2" placeholder="Private circuit track session, escort service, etc."></textarea>
+            <div class="m-field">
+              <label>Dealership</label>
+              <select [(ngModel)]="testDriveForm.dealershipLocation" name="dealershipLocation">
+                <option value="Dubai Flagship Atelier">Dubai Flagship Atelier</option>
+                <option value="London Mayfair Showroom">London Mayfair Showroom</option>
+                <option value="Monaco Monte Carlo Concierge">Monaco Monte Carlo Concierge</option>
+                <option value="Beverly Hills Private Suite">Beverly Hills Private Suite</option>
+              </select>
             </div>
-
-            <button type="submit" class="modal-submit-btn">
-              CONFIRM VIP BOOKING
-            </button>
+            <button type="submit" class="m-submit-btn">CONFIRM VIP RESERVATION</button>
           </form>
         }
       </div>
     </div>
   }
 
-  <!-- 9. BESPOKE BUILD ORDER MODAL -->
   @if (isCustomBuildModalOpen()) {
-    <div class="modal-backdrop" (click)="closeCustomBuildModal()">
-      <div class="modal-card glass-panel" (click)="$event.stopPropagation()">
-        <button class="modal-close" (click)="closeCustomBuildModal()">✕</button>
-        <div class="modal-header">
-          <span class="modal-pretitle">BESPOKE ATELIER COMMISSION</span>
-          <h2 class="modal-title">Order Customized Build</h2>
-          <p class="modal-subtitle">Your personalized 3D specification for the {{ selectedCar()?.name }} will be sent to the manufacturer.</p>
+    <div class="modal-overlay" (click)="closeCustomBuildModal()">
+      <div class="modal-window glass-panel" (click)="$event.stopPropagation()">
+        <button class="close-x" (click)="closeCustomBuildModal()">✕</button>
+        <span class="pre-title">FACTORY COMMISSION</span>
+        <h3 class="m-title">Commission {{ selectedCar()?.name }}</h3>
+
+        <div class="spec-recap">
+          <div class="recap-row"><span>Vehicle:</span> <strong>{{ selectedCar()?.name }}</strong></div>
+          <div class="recap-row"><span>Exterior Paint:</span> <strong [style.color]="selectedColor()?.hex">{{ selectedColor()?.name }}</strong></div>
+          <div class="recap-row"><span>Estimated Total:</span> <strong class="gold">${{ selectedCar()?.startingPrice?.toLocaleString() }} USD</strong></div>
         </div>
 
         @if (modalSuccessMessage()) {
-          <div class="success-banner">
-            <span class="check-icon">✓</span>
-            <p>{{ modalSuccessMessage() }}</p>
-          </div>
+          <div class="m-success-banner">✓ {{ modalSuccessMessage() }}</div>
         } @else {
-          <div class="build-summary-box">
-            <div class="summary-item">
-              <span class="s-label">Vehicle:</span>
-              <span class="s-val">{{ selectedCar()?.name }}</span>
-            </div>
-            <div class="summary-item">
-              <span class="s-label">Color:</span>
-              <span class="s-val" [style.color]="selectedColor()?.hex">{{ selectedColor()?.name }}</span>
-            </div>
-            <div class="summary-item">
-              <span class="s-label">Total Commission:</span>
-              <span class="s-val price">${{ selectedCar()?.startingPrice?.toLocaleString() }} USD</span>
-            </div>
-          </div>
-
-          <form class="modal-form" (ngSubmit)="submitCustomBuild()">
-            <div class="form-group">
+          <form class="m-form" (ngSubmit)="submitCustomBuild()">
+            <div class="m-field">
               <label>Collector Name</label>
               <input type="text" [(ngModel)]="customBuildForm.customerName" name="customerName" placeholder="Shahid Hussain" required />
             </div>
-
-            <div class="form-group">
+            <div class="m-field">
               <label>Private Email</label>
               <input type="email" [(ngModel)]="customBuildForm.customerEmail" name="customerEmail" placeholder="shahid@example.com" required />
             </div>
-
-            <button type="submit" class="modal-submit-btn">
-              SUBMIT BESPOKE COMMISSION
-            </button>
+            <button type="submit" class="m-submit-btn">TRANSMIT COMMISSION ORDER</button>
           </form>
         }
       </div>

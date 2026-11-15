@@ -37,6 +37,8 @@ export interface CarModel {
   weightKg: number;
   driveType: string;
   description: string;
+  imageUrl?: string;
+  galleryUrls?: string[];
   stockCount: number;
   availableColors: ColorOption[];
   interiorThemes: InteriorTheme[];

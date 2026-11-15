@@ -28,6 +28,12 @@ public class CarRepository
                 WeightKg = 1570,
                 DriveType = "e-4WD (All-Wheel Drive)",
                 Description = "The SF90 Stradale represents an epochal leap for Ferrari: hypercar performance married to groundbreaking hybrid plug-in engineering.",
+                ImageUrl = "https://images.unsplash.com/photo-1592198084033-aade902d1aae?auto=format&fit=crop&w=1200&q=80",
+                GalleryUrls = new()
+                {
+                    "https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80"
+                },
                 StockCount = 2,
                 AvailableColors = new List<ColorOption>
                 {
@@ -67,6 +73,11 @@ public class CarRepository
                 WeightKg = 1772,
                 DriveType = "E-AWD Electric Vectoring",
                 Description = "A breathtaking revolution: pure naturally aspirated screaming V12 revving to 9,500 RPM blended with futuristic electric torque-vectoring prowess.",
+                ImageUrl = "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=1200&q=80",
+                GalleryUrls = new()
+                {
+                    "https://images.unsplash.com/photo-1541348263662-e0c8de4259ba?auto=format&fit=crop&w=800&q=80"
+                },
                 StockCount = 1,
                 AvailableColors = new List<ColorOption>
                 {
@@ -106,6 +117,11 @@ public class CarRepository
                 WeightKg = 1995,
                 DriveType = "Permanent All-Wheel Drive",
                 Description = "A masterpiece with no equal on earth. Engineered to effortlessly shatter physical boundaries while wrapped in handcrafted haute-couture luxury.",
+                ImageUrl = "https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?auto=format&fit=crop&w=1200&q=80",
+                GalleryUrls = new()
+                {
+                    "https://images.unsplash.com/photo-1508974239320-0a029497e820?auto=format&fit=crop&w=800&q=80"
+                },
                 StockCount = 1,
                 AvailableColors = new List<ColorOption>
                 {
@@ -144,6 +160,11 @@ public class CarRepository
                 WeightKg = 1280,
                 DriveType = "Rear-Wheel Drive (RWD)",
                 Description = "Crafted by Horacio Pagani as an immortal work of art, defying screens and digital trends with exposed manual gear linkages and Carbo-Titanium metallurgy.",
+                ImageUrl = "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1200&q=80",
+                GalleryUrls = new()
+                {
+                    "https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=800&q=80"
+                },
                 StockCount = 1,
                 AvailableColors = new List<ColorOption>
                 {
@@ -182,6 +203,11 @@ public class CarRepository
                 WeightKg = 1450,
                 DriveType = "Rear-Wheel Drive (RWD)",
                 Description = "A radical motorsport projectile. Equipped with central radiator concept, Formula 1 style Drag Reduction System (DRS), and 860 kg of downforce.",
+                ImageUrl = "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1200&q=80",
+                GalleryUrls = new()
+                {
+                    "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80"
+                },
                 StockCount = 3,
                 AvailableColors = new List<ColorOption>
                 {
@@ -194,7 +220,7 @@ public class CarRepository
                 InteriorThemes = new List<InteriorTheme>
                 {
                     new() { Name = "Weissach Package Race-Tex & Carbon", PrimaryHex = "#151515", AccentHex = "#d5001c", Material = "Carbon Bucket Seats & Titanium Roll Cage" },
-                    new() { Name = "Black & GT Silver Contrast", PrimaryHex = "#202020", AccentHex = "#silver", Material = "FIA Homologated Lightweight Trim" }
+                    new() { Name = "Black & GT Silver Contrast", PrimaryHex = "#202020", AccentHex = "#c0c0c0", Material = "FIA Homologated Lightweight Trim" }
                 },
                 Hotspots = new List<CarHotspot>
                 {
@@ -221,6 +247,11 @@ public class CarRepository
                 WeightKg = 1941,
                 DriveType = "Rear-Wheel Drive (Drag Optimized RWD)",
                 Description = "The undisputed king of the quarter-mile. 0-60 mph in a terrifying 1.66 seconds, pulling over 2.0 G of acceleration with front wheels lifting into the air.",
+                ImageUrl = "https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=1200&q=80",
+                GalleryUrls = new()
+                {
+                    "https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=800&q=80"
+                },
                 StockCount = 2,
                 AvailableColors = new List<ColorOption>
                 {
