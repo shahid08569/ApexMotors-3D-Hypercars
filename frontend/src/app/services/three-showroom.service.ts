@@ -54,8 +54,7 @@ export class ThreeShowroomService {
 
     // 1. Scene
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x111416);
-    this.scene.fog = new THREE.FogExp2(0x111416, 0.035);
+    this.scene.background = null; // Transparent so luxury architectural showroom background image shines through!
 
     // 2. Camera
     const width = this.canvas.clientWidth || window.innerWidth;
@@ -106,12 +105,12 @@ export class ThreeShowroomService {
   }
 
   private setupLighting(): void {
-    this.ambientLight = new THREE.AmbientLight(0xfff8ee, 0.75);
+    this.ambientLight = new THREE.AmbientLight(0xfff8ee, 1.4);
     this.scene.add(this.ambientLight);
 
-    this.keySpotLight = new THREE.SpotLight(0xfff3e0, 2.8);
-    this.keySpotLight.position.set(5, 7.5, 5);
-    this.keySpotLight.angle = Math.PI / 3.8;
+    this.keySpotLight = new THREE.SpotLight(0xfff3e0, 3.6);
+    this.keySpotLight.position.set(4.5, 7.5, 4.5);
+    this.keySpotLight.angle = Math.PI / 3.6;
     this.keySpotLight.penumbra = 0.65;
     this.keySpotLight.castShadow = true;
     this.keySpotLight.shadow.mapSize.width = 2048;
@@ -119,11 +118,11 @@ export class ThreeShowroomService {
     this.keySpotLight.shadow.bias = -0.0001;
     this.scene.add(this.keySpotLight);
 
-    this.fillLight = new THREE.DirectionalLight(0xa7beae, 1.4);
+    this.fillLight = new THREE.DirectionalLight(0xa7beae, 1.6);
     this.fillLight.position.set(-6, 4, -4);
     this.scene.add(this.fillLight);
 
-    this.rimLight = new THREE.DirectionalLight(0xb85042, 1.8);
+    this.rimLight = new THREE.DirectionalLight(0xb85042, 2.2);
     this.rimLight.position.set(0, 4.5, -6);
     this.scene.add(this.rimLight);
   }

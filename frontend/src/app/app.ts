@@ -48,6 +48,7 @@ export class App implements OnInit, AfterViewInit, OnDestroy {
   public is3DReady = signal<boolean>(false);
   public isCockpitRealViewOpen = signal<boolean>(false);
   public cockpitZoomLevel = signal<number>(1.0);
+  public heroViewMode = signal<'3d' | 'real'>('3d');
 
   // Modals
   public isTestDriveModalOpen = signal<boolean>(false);
@@ -94,6 +95,7 @@ export class App implements OnInit, AfterViewInit, OnDestroy {
         this.customBuildForm.colorName = cars[0].availableColors[0]?.name || '';
         this.customBuildForm.colorHex = cars[0].availableColors[0]?.hex || '';
         this.customBuildForm.estimatedTotal = cars[0].startingPrice;
+        setTimeout(() => this.tryInit3D(), 50);
       }
     });
 
@@ -104,30 +106,38 @@ export class App implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      if (this.canvasRef && this.selectedCar()) {
-        this.threeShowroom.init(this.canvasRef, this.selectedCar()!);
-        this.is3DReady.set(true);
-
-        this.threeShowroom.onHotspotsUpdated = (positions) => {
-          const car = this.selectedCar();
-          if (!car) return;
-
-          const mapped: ScreenHotspot[] = positions.map(pos => {
-            const hs = car.hotspots?.find(h => h.id === pos.id);
-            return {
-              id: pos.id,
-              title: hs?.title || '',
-              description: hs?.description || '',
-              category: hs?.category || 'Feature',
-              x: pos.x,
-              y: pos.y,
-              visible: pos.visible
-            };
-          });
-          this.screenHotspots.set(mapped);
-        };
-      }
+      this.tryInit3D();
     }, 100);
+  }
+
+  private tryInit3D(): void {
+    if (this.is3DReady() || !this.canvasRef || !this.selectedCar()) return;
+    this.threeShowroom.init(this.canvasRef, this.selectedCar()!);
+    this.is3DReady.set(true);
+
+    this.threeShowroom.onHotspotsUpdated = (positions) => {
+      const car = this.selectedCar();
+      if (!car) return;
+
+      const mapped: ScreenHotspot[] = positions.map(pos => {
+        const hs = car.hotspots?.find(h => h.id === pos.id);
+        return {
+          id: pos.id,
+          title: hs?.title || '',
+          description: hs?.description || '',
+          category: hs?.category || 'Feature',
+          x: pos.x,
+          y: pos.y,
+          visible: pos.visible
+        };
+      });
+      this.screenHotspots.set(mapped);
+    };
+  }
+
+  public setHeroViewMode(mode: '3d' | 'real'): void {
+    this.heroViewMode.set(mode);
+    this.audioService.playClick();
   }
 
   public selectCar(car: CarModel): void {
@@ -145,6 +155,8 @@ export class App implements OnInit, AfterViewInit, OnDestroy {
     if (this.is3DReady()) {
       this.threeShowroom.buildCarModel(car);
       this.threeShowroom.setCameraPreset('orbit');
+    } else {
+      setTimeout(() => this.tryInit3D(), 50);
     }
     this.audioService.playClick();
   }
