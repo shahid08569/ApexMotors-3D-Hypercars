@@ -16,21 +16,33 @@
   --bg-surface-elevated: #202528;
 }
 
+*, *::before, *::after {
+  box-sizing: border-box;
+  -webkit-user-drag: none;
+}
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 90px;
-  background-color: var(--bg-deep);
+  background-color: #0b0d0f;
   color: var(--color-cream);
+  overscroll-behavior-y: none; /* Prevents white rubber-band bounce when dragging at top */
 }
 
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--bg-deep);
+  background-color: #0b0d0f;
   color: var(--color-cream);
   font-family: 'Outfit', sans-serif;
   overflow-x: hidden;
   overflow-y: auto;
+  overscroll-behavior-y: none;
+}
+
+img, canvas, svg {
+  -webkit-user-drag: none;
+  user-select: none;
 }
 
 /* Custom Luxury Scrollbar */

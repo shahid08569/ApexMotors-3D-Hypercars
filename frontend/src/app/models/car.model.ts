@@ -39,6 +39,7 @@ export interface CarModel {
   description: string;
   imageUrl?: string;
   interiorImageUrl?: string;
+  real360Angles?: string[];
   galleryUrls?: string[];
   stockCount: number;
   availableColors: ColorOption[];

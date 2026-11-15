@@ -82,9 +82,10 @@ export class ThreeShowroomService {
     this.controls.enableDamping = true;
     this.controls.dampingFactor = 0.05;
     this.controls.enableZoom = false; // Prevents mouse wheel scroll hijacking so page scrolls ultra-smoothly!
-    this.controls.maxPolarAngle = Math.PI / 2 - 0.02;
-    this.controls.minDistance = 0.4;
-    this.controls.maxDistance = 14;
+    this.controls.minPolarAngle = Math.PI / 4.2; // ~42°: Prevents tilting straight up and seeing overhead voids!
+    this.controls.maxPolarAngle = Math.PI / 2.05; // ~87°: Prevents dipping below floor level
+    this.controls.minDistance = 2.0;
+    this.controls.maxDistance = 10;
     this.controls.target.set(0, 0.6, 0);
 
     // 5. Build Environment & Lighting
@@ -150,17 +151,6 @@ export class ThreeShowroomService {
     neonRing.rotation.x = -Math.PI / 2;
     neonRing.position.y = 0.002;
     this.scene.add(neonRing);
-
-    // Softbox Light Panel overhead
-    const softboxGeo = new THREE.PlaneGeometry(6.5, 4.2);
-    const softboxMat = new THREE.MeshBasicMaterial({
-      color: 0xe7e8d1,
-      side: THREE.DoubleSide
-    });
-    this.ceilingSoftbox = new THREE.Mesh(softboxGeo, softboxMat);
-    this.ceilingSoftbox.rotation.x = Math.PI / 2;
-    this.ceilingSoftbox.position.set(0, 5.2, 0);
-    this.scene.add(this.ceilingSoftbox);
 
     // Floor Grid (#a7beae / sage)
     this.floorGrid = new THREE.GridHelper(26, 26, 0xb85042, 0x242d2a);

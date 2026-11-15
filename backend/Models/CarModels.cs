@@ -45,6 +45,7 @@ public class CarModel
     public string Description { get; set; } = string.Empty;
     public string ImageUrl { get; set; } = string.Empty;
     public string InteriorImageUrl { get; set; } = string.Empty;
+    public List<string> Real360Angles { get; set; } = new();
     public List<string> GalleryUrls { get; set; } = new();
     public int StockCount { get; set; }
     public List<ColorOption> AvailableColors { get; set; } = new();

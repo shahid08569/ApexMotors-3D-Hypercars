@@ -48,7 +48,13 @@ export class App implements OnInit, AfterViewInit, OnDestroy {
   public is3DReady = signal<boolean>(false);
   public isCockpitRealViewOpen = signal<boolean>(false);
   public cockpitZoomLevel = signal<number>(1.0);
-  public heroViewMode = signal<'3d' | 'real'>('3d');
+  public heroViewMode = signal<'real360' | '3d'>('real360');
+  public real360AngleIndex = signal<number>(0);
+  public isAutoSpinning = signal<boolean>(false);
+  private autoSpinInterval: any = null;
+  public isDragging360: boolean = false;
+  private dragStartX: number = 0;
+  private dragStartIndex: number = 0;
 
   // Modals
   public isTestDriveModalOpen = signal<boolean>(false);
@@ -135,9 +141,95 @@ export class App implements OnInit, AfterViewInit, OnDestroy {
     };
   }
 
-  public setHeroViewMode(mode: '3d' | 'real'): void {
+  public setHeroViewMode(mode: 'real360' | '3d'): void {
     this.heroViewMode.set(mode);
     this.audioService.playClick();
+  }
+
+  public set360Angle(index: number): void {
+    const total = this.selectedCar()?.real360Angles?.length || 8;
+    const normalized = ((index % total) + total) % total;
+    this.real360AngleIndex.set(normalized);
+  }
+
+  public next360Angle(): void {
+    this.set360Angle(this.real360AngleIndex() + 1);
+  }
+
+  public prev360Angle(): void {
+    this.set360Angle(this.real360AngleIndex() - 1);
+  }
+
+  public toggleAutoSpin(): void {
+    if (this.isAutoSpinning()) {
+      this.stopAutoSpin();
+    } else {
+      this.startAutoSpin();
+    }
+    this.audioService.playClick();
+  }
+
+  public startAutoSpin(): void {
+    this.isAutoSpinning.set(true);
+    if (this.autoSpinInterval) clearInterval(this.autoSpinInterval);
+    this.autoSpinInterval = setInterval(() => {
+      this.next360Angle();
+    }, 1400);
+  }
+
+  public stopAutoSpin(): void {
+    this.isAutoSpinning.set(false);
+    if (this.autoSpinInterval) {
+      clearInterval(this.autoSpinInterval);
+      this.autoSpinInterval = null;
+    }
+  }
+
+  public on360DragStart(e: MouseEvent | TouchEvent): void {
+    this.stopAutoSpin();
+    this.isDragging360 = true;
+    this.dragStartX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    this.dragStartIndex = this.real360AngleIndex();
+  }
+
+  public on360DragMove(e: MouseEvent | TouchEvent): void {
+    if (!this.isDragging360) return;
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const deltaX = clientX - this.dragStartX;
+    const stepThreshold = 40;
+    const steps = Math.floor(deltaX / stepThreshold);
+    this.set360Angle(this.dragStartIndex - steps);
+  }
+
+  public on360DragEnd(): void {
+    this.isDragging360 = false;
+  }
+
+  public currentAngleDegrees(): number {
+    return this.real360AngleIndex() * 45;
+  }
+
+  public currentAngleLabel(): string {
+    const labels = [
+      '0° Front Three-Quarter',
+      '45° Front Dynamic Aero',
+      '90° Side Profile Stance',
+      '135° Rear Three-Quarter',
+      '180° Direct Rear & Diffuser',
+      '225° Rear Dynamic Track',
+      '270° Left Side Silhouette',
+      '315° Front Headlight Stance'
+    ];
+    return labels[this.real360AngleIndex()] || `${this.currentAngleDegrees()}° Real Angle`;
+  }
+
+  public getCurrentRealAngleImage(): string {
+    const car = this.selectedCar();
+    if (!car) return '';
+    if (car.real360Angles && car.real360Angles.length > 0) {
+      return car.real360Angles[this.real360AngleIndex()] || car.imageUrl || '';
+    }
+    return car.imageUrl || '';
   }
 
   public selectCar(car: CarModel): void {
@@ -305,6 +397,7 @@ export class App implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.stopAutoSpin();
     this.threeShowroom.destroy();
   }
 }
