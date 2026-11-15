@@ -1,0 +1,428 @@
+<div class="showroom-wrapper" [class.night-mode]="isNightMode()">
+  <!-- 1. FULL VIEWPORT 3D CANVAS -->
+  <canvas #canvasRef class="webgl-canvas"></canvas>
+
+  <!-- 2. TOP LUXURY NAVIGATION -->
+  <header class="top-nav glass-panel">
+    <div class="brand-container">
+      <div class="emblem-shield">
+        <svg viewBox="0 0 24 24" class="shield-icon">
+          <polygon points="12,2 22,6 20,18 12,22 4,18 2,6" />
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="apex-title">APEX HYPERCARS</span>
+        <span class="apex-sub">VIRTUAL ATELIER & SHOWROOM</span>
+      </div>
+    </div>
+
+    <!-- Quick Marque Switchers -->
+    <div class="marque-chips">
+      @for (c of cars(); track c.id) {
+        <button
+          class="marque-btn"
+          [class.active]="selectedCar()?.id === c.id"
+          (click)="selectCar(c)"
+        >
+          {{ c.brand }}
+        </button>
+      }
+    </div>
+
+    <!-- Showroom Actions & Toggles -->
+    <div class="nav-controls">
+      <!-- Cockpit Hero Action -->
+      <button
+        class="action-btn hero-cockpit-btn"
+        [class.active]="activeCameraPreset() === 'cockpit'"
+        (click)="setCameraView(activeCameraPreset() === 'cockpit' ? 'orbit' : 'cockpit')"
+      >
+        <span class="btn-icon">💺</span>
+        <span class="btn-label">{{ activeCameraPreset() === 'cockpit' ? 'EXIT COCKPIT' : 'ZOOM INSIDE COCKPIT' }}</span>
+      </button>
+
+      <!-- Headlights -->
+      <button
+        class="icon-btn"
+        [class.active]="areHeadlightsOn()"
+        (click)="toggleHeadlights()"
+        title="Toggle Headlights"
+      >
+        💡
+      </button>
+
+      <!-- Day / Cyber Night Mode -->
+      <button
+        class="icon-btn"
+        [class.active]="isNightMode()"
+        (click)="toggleShowroomLighting()"
+        title="Daylight Studio / Cyber Night"
+      >
+        {{ isNightMode() ? '🌙' : '☀️' }}
+      </button>
+
+      <!-- Audio Toggle -->
+      <button
+        class="icon-btn"
+        [class.active]="!isMuted()"
+        (click)="toggleAudio()"
+        title="Sound FX"
+      >
+        {{ isMuted() ? '🔇' : '🔊' }}
+      </button>
+    </div>
+  </header>
+
+  <!-- 3. SCREEN-PROJECTED 3D HOTSPOTS -->
+  <div class="hotspots-overlay">
+    @for (hs of screenHotspots(); track hs.id) {
+      @if (hs.visible) {
+        <div
+          class="hotspot-pin"
+          [style.left.px]="hs.x"
+          [style.top.px]="hs.y"
+          (click)="openHotspot(hs.id)"
+        >
+          <div class="pin-pulse"></div>
+          <div class="pin-core"></div>
+          <div class="pin-label">{{ hs.title }}</div>
+        </div>
+      }
+    }
+  </div>
+
+  <!-- 4. LEFT FLOATING TELEMETRY CARD -->
+  @if (selectedCar(); as car) {
+    <aside class="left-telemetry glass-panel">
+      <div class="car-badge-row">
+        <span class="brand-pill">{{ car.brand }}</span>
+        <span class="stock-pill">{{ car.stockCount }} IN ATELIER</span>
+      </div>
+
+      <h1 class="car-title">{{ car.name }}</h1>
+      <p class="car-tagline">{{ car.tagline }}</p>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <span class="metric-val">{{ car.horsepower }}</span>
+          <span class="metric-unit">HORSEPOWER</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-val">{{ car.zeroToHundredSeconds }}s</span>
+          <span class="metric-unit">0-100 KM/H</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-val">{{ car.topSpeedKmh }}</span>
+          <span class="metric-unit">TOP KM/H</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-val">{{ car.torqueNm }}</span>
+          <span class="metric-unit">TORQUE NM</span>
+        </div>
+      </div>
+
+      <div class="spec-detail-box">
+        <div class="spec-row">
+          <span class="spec-label">Engine:</span>
+          <span class="spec-value">{{ car.engine }}</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-label">Transmission:</span>
+          <span class="spec-value">{{ car.transmission }}</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-label">Drivetrain:</span>
+          <span class="spec-value">{{ car.driveType }}</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-label">Price:</span>
+          <span class="spec-value price-tag">${{ car.startingPrice.toLocaleString() }} {{ car.currency }}</span>
+        </div>
+      </div>
+
+      <div class="cta-actions">
+        <!-- VIP Test Drive -->
+        <button class="primary-btn" (click)="openTestDriveModal()">
+          <span>REQUEST VIP TEST DRIVE</span>
+          <span class="btn-arrow">→</span>
+        </button>
+
+        <!-- Engine Rev Sound -->
+        <button
+          class="rev-btn"
+          [class.revving]="isRevving()"
+          (mousedown)="onRevEngineStart()"
+          (mouseup)="onRevEngineEnd()"
+          (touchstart)="onRevEngineStart()"
+          (touchend)="onRevEngineEnd()"
+        >
+          <span class="rev-icon">🔥</span>
+          <span>HOLD TO REV ENGINE</span>
+          <div class="sound-wave">
+            <span></span><span></span><span></span><span></span>
+          </div>
+        </button>
+      </div>
+    </aside>
+  }
+
+  <!-- 5. RIGHT FLOATING 3D CUSTOMIZER DRAWER -->
+  <aside class="right-customizer glass-panel" [class.collapsed]="!isCustomizerOpen()">
+    <div class="drawer-header">
+      <span class="drawer-title">3D BESPOKE ATELIER</span>
+      <button class="collapse-toggle" (click)="isCustomizerOpen.set(!isCustomizerOpen())">
+        {{ isCustomizerOpen() ? '✕' : '⚙️' }}
+      </button>
+    </div>
+
+    @if (isCustomizerOpen() && selectedCar(); as car) {
+      <div class="drawer-content">
+        <!-- Camera View Presets -->
+        <div class="customizer-section">
+          <label class="section-label">CAMERA PERSPECTIVE</label>
+          <div class="preset-chips">
+            <button
+              class="preset-chip"
+              [class.active]="activeCameraPreset() === 'orbit'"
+              (click)="setCameraView('orbit')"
+            >
+              Orbit 360°
+            </button>
+            <button
+              class="preset-chip"
+              [class.active]="activeCameraPreset() === 'cockpit'"
+              (click)="setCameraView('cockpit')"
+            >
+              Cockpit View
+            </button>
+            <button
+              class="preset-chip"
+              [class.active]="activeCameraPreset() === 'engine'"
+              (click)="setCameraView('engine')"
+            >
+              Engine Bay
+            </button>
+            <button
+              class="preset-chip"
+              [class.active]="activeCameraPreset() === 'aero'"
+              (click)="setCameraView('aero')"
+            >
+              Active Aero
+            </button>
+            <button
+              class="preset-chip"
+              [class.active]="activeCameraPreset() === 'brakes'"
+              (click)="setCameraView('brakes')"
+            >
+              Brembo Brakes
+            </button>
+          </div>
+        </div>
+
+        <!-- Exterior Paint Colors -->
+        <div class="customizer-section">
+          <div class="section-label-row">
+            <label class="section-label">EXTERIOR BESPOKE PAINT</label>
+            <span class="color-name-badge">{{ selectedColor()?.name }}</span>
+          </div>
+          <div class="color-swatches">
+            @for (c of car.availableColors; track c.hex) {
+              <div
+                class="color-swatch"
+                [class.selected]="selectedColor()?.hex === c.hex"
+                [style.background]="c.hex"
+                (click)="selectColor(c)"
+                [title]="c.name"
+              >
+                <div class="swatch-shine"></div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Interior Trim Options -->
+        <div class="customizer-section">
+          <label class="section-label">INTERIOR CABIN TRIM</label>
+          <div class="interior-themes">
+            @for (t of car.interiorThemes; track t.name) {
+              <div class="interior-card">
+                <div class="theme-dots">
+                  <span class="dot" [style.background]="t.primaryHex"></span>
+                  <span class="dot" [style.background]="t.accentHex"></span>
+                </div>
+                <div class="theme-info">
+                  <span class="theme-title">{{ t.name }}</span>
+                  <span class="theme-material">{{ t.material }}</span>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Order Bespoke Build CTA -->
+        <div class="customizer-footer">
+          <button class="order-btn" (click)="openCustomBuildModal()">
+            <span>SAVE & ORDER BESPOKE SPEC</span>
+            <span class="btn-arrow">⚡</span>
+          </button>
+        </div>
+      </div>
+    }
+  </aside>
+
+  <!-- 6. BOTTOM CAR SWITCHER CAROUSEL -->
+  <footer class="bottom-carousel glass-panel">
+    <div class="carousel-track">
+      @for (c of cars(); track c.id) {
+        <div
+          class="car-card"
+          [class.active]="selectedCar()?.id === c.id"
+          (click)="selectCar(c)"
+        >
+          <div class="card-brand">{{ c.brand }}</div>
+          <div class="card-title">{{ c.name }}</div>
+          <div class="card-specs">
+            <span>{{ c.horsepower }} HP</span>
+            <span class="dot-sep">•</span>
+            <span>{{ c.zeroToHundredSeconds }}s</span>
+            <span class="dot-sep">•</span>
+            <span class="card-price">${{ (c.startingPrice / 1000).toFixed(0) }}k</span>
+          </div>
+        </div>
+      }
+    </div>
+  </footer>
+
+  <!-- 7. HOTSPOT DETAIL DRAWER / POPUP -->
+  @if (selectedHotspot(); as hs) {
+    <div class="hotspot-drawer glass-panel">
+      <div class="drawer-top">
+        <span class="hotspot-badge">{{ hs.category }}</span>
+        <button class="close-btn" (click)="closeHotspot()">✕</button>
+      </div>
+      <h3 class="hotspot-title">{{ hs.title }}</h3>
+      <p class="hotspot-desc">{{ hs.description }}</p>
+      <div class="drawer-actions">
+        <button class="orbit-back-btn" (click)="setCameraView('orbit'); closeHotspot()">
+          BACK TO ORBIT
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- 8. VIP TEST DRIVE MODAL -->
+  @if (isTestDriveModalOpen()) {
+    <div class="modal-backdrop" (click)="closeTestDriveModal()">
+      <div class="modal-card glass-panel" (click)="$event.stopPropagation()">
+        <button class="modal-close" (click)="closeTestDriveModal()">✕</button>
+        <div class="modal-header">
+          <span class="modal-pretitle">VIP CONCIERGE SERVICE</span>
+          <h2 class="modal-title">Book A Test Drive</h2>
+          <p class="modal-subtitle">Experience the raw engineering of the {{ selectedCar()?.name }} on track or city tour.</p>
+        </div>
+
+        @if (modalSuccessMessage()) {
+          <div class="success-banner">
+            <span class="check-icon">✓</span>
+            <p>{{ modalSuccessMessage() }}</p>
+          </div>
+        } @else {
+          <form class="modal-form" (ngSubmit)="submitTestDrive()">
+            <div class="form-group">
+              <label>Full Legal Name</label>
+              <input type="text" [(ngModel)]="testDriveForm.fullName" name="fullName" placeholder="Shahid Hussain" required />
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" [(ngModel)]="testDriveForm.email" name="email" placeholder="shahid@example.com" required />
+              </div>
+              <div class="form-group">
+                <label>Phone / WhatsApp</label>
+                <input type="tel" [(ngModel)]="testDriveForm.phone" name="phone" placeholder="+971 50 123 4567" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Preferred Date</label>
+                <input type="date" [(ngModel)]="testDriveForm.preferredDate" name="preferredDate" />
+              </div>
+              <div class="form-group">
+                <label>Dealership Location</label>
+                <select [(ngModel)]="testDriveForm.dealershipLocation" name="dealershipLocation">
+                  <option value="Dubai Flagship Atelier">Dubai Flagship Atelier</option>
+                  <option value="London Mayfair Showroom">London Mayfair Showroom</option>
+                  <option value="Monaco Monte Carlo Concierge">Monaco Monte Carlo Concierge</option>
+                  <option value="Beverly Hills Private Suite">Beverly Hills Private Suite</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Special Requests or Track Preparation</label>
+              <textarea [(ngModel)]="testDriveForm.notes" name="notes" rows="2" placeholder="Private circuit track session, escort service, etc."></textarea>
+            </div>
+
+            <button type="submit" class="modal-submit-btn">
+              CONFIRM VIP BOOKING
+            </button>
+          </form>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- 9. BESPOKE BUILD ORDER MODAL -->
+  @if (isCustomBuildModalOpen()) {
+    <div class="modal-backdrop" (click)="closeCustomBuildModal()">
+      <div class="modal-card glass-panel" (click)="$event.stopPropagation()">
+        <button class="modal-close" (click)="closeCustomBuildModal()">✕</button>
+        <div class="modal-header">
+          <span class="modal-pretitle">BESPOKE ATELIER COMMISSION</span>
+          <h2 class="modal-title">Order Customized Build</h2>
+          <p class="modal-subtitle">Your personalized 3D specification for the {{ selectedCar()?.name }} will be sent to the manufacturer.</p>
+        </div>
+
+        @if (modalSuccessMessage()) {
+          <div class="success-banner">
+            <span class="check-icon">✓</span>
+            <p>{{ modalSuccessMessage() }}</p>
+          </div>
+        } @else {
+          <div class="build-summary-box">
+            <div class="summary-item">
+              <span class="s-label">Vehicle:</span>
+              <span class="s-val">{{ selectedCar()?.name }}</span>
+            </div>
+            <div class="summary-item">
+              <span class="s-label">Color:</span>
+              <span class="s-val" [style.color]="selectedColor()?.hex">{{ selectedColor()?.name }}</span>
+            </div>
+            <div class="summary-item">
+              <span class="s-label">Total Commission:</span>
+              <span class="s-val price">${{ selectedCar()?.startingPrice?.toLocaleString() }} USD</span>
+            </div>
+          </div>
+
+          <form class="modal-form" (ngSubmit)="submitCustomBuild()">
+            <div class="form-group">
+              <label>Collector Name</label>
+              <input type="text" [(ngModel)]="customBuildForm.customerName" name="customerName" placeholder="Shahid Hussain" required />
+            </div>
+
+            <div class="form-group">
+              <label>Private Email</label>
+              <input type="email" [(ngModel)]="customBuildForm.customerEmail" name="customerEmail" placeholder="shahid@example.com" required />
+            </div>
+
+            <button type="submit" class="modal-submit-btn">
+              SUBMIT BESPOKE COMMISSION
+            </button>
+          </form>
+        }
+      </div>
+    </div>
+  }
+</div>

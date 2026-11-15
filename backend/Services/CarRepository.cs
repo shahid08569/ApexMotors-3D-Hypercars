@@ -1,0 +1,286 @@
+using backend.Models;
+
+namespace backend.Services;
+
+public class CarRepository
+{
+    private readonly List<CarModel> _cars;
+    private readonly List<TestDriveRequest> _testDrives = new();
+    private readonly List<CustomBuildRequest> _customBuilds = new();
+
+    public CarRepository()
+    {
+        _cars = new List<CarModel>
+        {
+            new CarModel
+            {
+                Id = "ferrari-sf90",
+                Name = "Ferrari SF90 Stradale",
+                Brand = "Ferrari",
+                Tagline = "Beyond Imagination - The First Ever PHEV V8 Prancing Horse",
+                StartingPrice = 625000,
+                Engine = "4.0L Twin-Turbo 90° V8 + 3 Electric Motors",
+                Horsepower = 1000,
+                TopSpeedKmh = 340,
+                ZeroToHundredSeconds = 2.5,
+                TorqueNm = 800,
+                Transmission = "8-Speed Dual-Clutch F1",
+                WeightKg = 1570,
+                DriveType = "e-4WD (All-Wheel Drive)",
+                Description = "The SF90 Stradale represents an epochal leap for Ferrari: hypercar performance married to groundbreaking hybrid plug-in engineering.",
+                StockCount = 2,
+                AvailableColors = new List<ColorOption>
+                {
+                    new() { Name = "Rosso Corsa (Classic Red)", Hex = "#dc0616", Metallic = 0.88, Roughness = 0.18 },
+                    new() { Name = "Giallo Modena (Canary Yellow)", Hex = "#f7d002", Metallic = 0.85, Roughness = 0.2 },
+                    new() { Name = "Nero Daytona (Metallic Black)", Hex = "#151516", Metallic = 0.95, Roughness = 0.15 },
+                    new() { Name = "Blu Tour de France (Deep Blue)", Hex = "#122a5e", Metallic = 0.9, Roughness = 0.18 },
+                    new() { Name = "Argento Nurburgring (Silver Frost)", Hex = "#c5c8cb", Metallic = 0.96, Roughness = 0.12 }
+                },
+                InteriorThemes = new List<InteriorTheme>
+                {
+                    new() { Name = "Cuoio Leather & Carbon", PrimaryHex = "#b6773a", AccentHex = "#1a1a1a", Material = "Poltrona Frau Leather" },
+                    new() { Name = "Nero Alcantara Rosso Stitch", PrimaryHex = "#1c1c1c", AccentHex = "#dc0616", Material = "Racing Alcantara" }
+                },
+                Hotspots = new List<CarHotspot>
+                {
+                    new() { Id = "engine", Title = "1,000 HP Hybrid Powertrain", Description = "Twin-Turbocharged 4.0L V8 coupled with 3 electric motors generating instant torque from 0 RPM.", Position = new[] { 0.0, 0.7, -0.6 }, Category = "Engine" },
+                    new() { Id = "cockpit", Title = "Aeronautic Cockpit & Head-Up Display", Description = "Curved 16-inch high-def digital cluster with touch-sensitive HMI steering wheel.", Position = new[] { -0.35, 0.85, 0.15 }, Category = "Cockpit" },
+                    new() { Id = "aero", Title = "Shut-Off Gurney Active Aero", Description = "Patented rear active wing produces up to 390 kg of downforce at 250 km/h.", Position = new[] { 0.0, 0.9, -1.8 }, Category = "Aero" },
+                    new() { Id = "brakes", Title = "Carbon-Ceramic Brembo Calipers", Description = "398mm front discs with brake-by-wire system achieving 100-0 km/h in just 29.5 meters.", Position = new[] { 0.95, 0.35, 1.2 }, Category = "Wheels" }
+                },
+                Highlights = new List<string> { "1,000 HP Combined Output", "25 km Pure Electric Range", "Assetto Fiorano Package Available", "Formula 1 Derived MGU-K" }
+            },
+            new CarModel
+            {
+                Id = "lamborghini-revuelto",
+                Name = "Lamborghini Revuelto",
+                Brand = "Lamborghini",
+                Tagline = "From Now On - The First V12 High Performance Electrified Vehicle",
+                StartingPrice = 608000,
+                Engine = "6.5L Naturally Aspirated V12 + 3 E-Motors",
+                Horsepower = 1015,
+                TopSpeedKmh = 350,
+                ZeroToHundredSeconds = 2.5,
+                TorqueNm = 1062,
+                Transmission = "8-Speed Dual-Clutch Transverse",
+                WeightKg = 1772,
+                DriveType = "E-AWD Electric Vectoring",
+                Description = "A breathtaking revolution: pure naturally aspirated screaming V12 revving to 9,500 RPM blended with futuristic electric torque-vectoring prowess.",
+                StockCount = 1,
+                AvailableColors = new List<ColorOption>
+                {
+                    new() { Name = "Verde Mantis (Neon Green)", Hex = "#00e653", Metallic = 0.82, Roughness = 0.19 },
+                    new() { Name = "Arancio Apodis (Fiery Orange)", Hex = "#ff5500", Metallic = 0.9, Roughness = 0.15 },
+                    new() { Name = "Giallo Auge (Solar Yellow)", Hex = "#f5d100", Metallic = 0.86, Roughness = 0.18 },
+                    new() { Name = "Blu Cepheus (Electric Cyan)", Hex = "#00b4d8", Metallic = 0.92, Roughness = 0.16 },
+                    new() { Name = "Grigio Titans (Matte Stealth)", Hex = "#38383a", Metallic = 0.4, Roughness = 0.45 }
+                },
+                InteriorThemes = new List<InteriorTheme>
+                {
+                    new() { Name = "Corsia Arancio Sportivo", PrimaryHex = "#181818", AccentHex = "#ff5500", Material = "CarbonSkin & Alcantara" },
+                    new() { Name = "Verde Mantis Bicolore", PrimaryHex = "#151515", AccentHex = "#00e653", Material = "Unicolor Dinamica" }
+                },
+                Hotspots = new List<CarHotspot>
+                {
+                    new() { Id = "engine", Title = "9,500 RPM Naturally Aspirated V12", Description = "Mid-mounted naturally aspirated 6.5L masterpiece roaring with pure auditory euphoria.", Position = new[] { 0.0, 0.75, -0.7 }, Category = "Engine" },
+                    new() { Id = "cockpit", Title = "Space-Ship Pilot Cockpit", Description = "Hexagonal carbon motif, fighter-jet ignition flap, and 3 immersive digital screens.", Position = new[] { -0.35, 0.82, 0.2 }, Category = "Cockpit" },
+                    new() { Id = "aero", Title = "Y-Shape LED Aerodynamics", Description = "Y-shaped signature aerodynamics with active aero wing adjusting automatically for cornering grip.", Position = new[] { 0.0, 0.85, -1.75 }, Category = "Aero" },
+                    new() { Id = "brakes", Title = "10-Piston Carbon Ceramic Monoblocs", Description = "Massive 410mm carbon discs clamped by 10-piston lightweight calipers.", Position = new[] { 0.95, 0.35, 1.25 }, Category = "Wheels" }
+                },
+                Highlights = new List<string> { "1,015 PS Peak Power", "9,500 RPM Redline", "Carbon Fiber Monofuselage Chassis", "Scissor Doors Experience" }
+            },
+            new CarModel
+            {
+                Id = "bugatti-chiron",
+                Name = "Bugatti Chiron Super Sport",
+                Brand = "Bugatti",
+                Tagline = "The Pinnacle of Automotive Mastery - 1,600 PS of Unrivaled Luxury",
+                StartingPrice = 3900000,
+                Engine = "8.0L Quad-Turbocharged W16",
+                Horsepower = 1600,
+                TopSpeedKmh = 440,
+                ZeroToHundredSeconds = 2.4,
+                TorqueNm = 1600,
+                Transmission = "7-Speed Dual-Clutch Ricard",
+                WeightKg = 1995,
+                DriveType = "Permanent All-Wheel Drive",
+                Description = "A masterpiece with no equal on earth. Engineered to effortlessly shatter physical boundaries while wrapped in handcrafted haute-couture luxury.",
+                StockCount = 1,
+                AvailableColors = new List<ColorOption>
+                {
+                    new() { Name = "French Racing Blue & Atlantic Blue", Hex = "#1e4d94", Metallic = 0.9, Roughness = 0.17 },
+                    new() { Name = "Bugatti Jet Black & Tangerine", Hex = "#0f1012", Metallic = 0.95, Roughness = 0.14 },
+                    new() { Name = "Nocturne Carbon & Copper", Hex = "#2c2826", Metallic = 0.88, Roughness = 0.22 },
+                    new() { Name = "Glacier White & Royal Dark Blue", Hex = "#f2f3f5", Metallic = 0.75, Roughness = 0.2 }
+                },
+                InteriorThemes = new List<InteriorTheme>
+                {
+                    new() { Name = "Havanna Saddle & Polished Aluminum", PrimaryHex = "#794628", AccentHex = "#d6d6d6", Material = "Full-Grain Bugatti Hide" },
+                    new() { Name = "Terre d'Or & Exposed Blue Carbon", PrimaryHex = "#bf8244", AccentHex = "#1a2c4e", Material = "Haute Horlogerie Handcrafted" }
+                },
+                Hotspots = new List<CarHotspot>
+                {
+                    new() { Id = "engine", Title = "8.0L Quad-Turbo W16 Beast", Description = "16 cylinders fed by 4 two-stage turbochargers consuming 60,000 liters of air per minute.", Position = new[] { 0.0, 0.8, -0.6 }, Category = "Engine" },
+                    new() { Id = "cockpit", Title = "S-Line Center Spine & Titanium Dials", Description = "Iconic curved C-line cockpit lit with OLED lights and Swiss-chronograph dials.", Position = new[] { -0.32, 0.88, 0.18 }, Category = "Cockpit" },
+                    new() { Id = "aero", Title = "Airbrake & Longtail Aerodynamics", Description = "Hydraulic active rear wing acting as an aerodynamic parachute and high-speed stabilizer.", Position = new[] { 0.0, 0.95, -1.95 }, Category = "Aero" },
+                    new() { Id = "brakes", Title = "Aerospace Grade 8-Piston Calipers", Description = "Formula 1 spec titanium calipers manufactured with 3D additive printing.", Position = new[] { 0.98, 0.36, 1.3 }, Category = "Wheels" }
+                },
+                Highlights = new List<string> { "1,600 PS Quad-Turbo W16", "440 km/h Governed Speed", "Titanium Quad Exhaust Pipes", "Exclusive Molsheim Atelier Build" }
+            },
+            new CarModel
+            {
+                Id = "pagani-utopia",
+                Name = "Pagani Utopia",
+                Brand = "Pagani",
+                Tagline = "A Timeless Sculpture of Carbon, Sound, and Pure Mechanical Soul",
+                StartingPrice = 2500000,
+                Engine = "6.0L Mercedes-AMG Twin-Turbo V12",
+                Horsepower = 864,
+                TopSpeedKmh = 354,
+                ZeroToHundredSeconds = 2.8,
+                TorqueNm = 1100,
+                Transmission = "7-Speed Xtrac Gated Manual / AMT",
+                WeightKg = 1280,
+                DriveType = "Rear-Wheel Drive (RWD)",
+                Description = "Crafted by Horacio Pagani as an immortal work of art, defying screens and digital trends with exposed manual gear linkages and Carbo-Titanium metallurgy.",
+                StockCount = 1,
+                AvailableColors = new List<ColorOption>
+                {
+                    new() { Name = "Rinascimento Gold", Hex = "#c89a4b", Metallic = 0.96, Roughness = 0.15 },
+                    new() { Name = "Blue Carbon Weave", Hex = "#13233a", Metallic = 0.8, Roughness = 0.25 },
+                    new() { Name = "Bianco Benny (Pearlescent White)", Hex = "#f5f6f8", Metallic = 0.7, Roughness = 0.18 },
+                    new() { Name = "Rosso Dubai (Velvet Ruby)", Hex = "#8a031e", Metallic = 0.92, Roughness = 0.16 }
+                },
+                InteriorThemes = new List<InteriorTheme>
+                {
+                    new() { Name = "Vintage Pecan & Machined Aluminum", PrimaryHex = "#8f572a", AccentHex = "#e0e0e0", Material = "Hand-Stitched Italian Leather" },
+                    new() { Name = "Crimson Red & Smoked Carbon", PrimaryHex = "#9b111e", AccentHex = "#1e1e1e", Material = "Aviation-Grade Anodized Alloy" }
+                },
+                Hotspots = new List<CarHotspot>
+                {
+                    new() { Id = "engine", Title = "Bespoke AMG 6.0L Twin-Turbo V12", Description = "Specially calibrated by AMG for Pagani delivering 1,100 Nm of relentless analog torque.", Position = new[] { 0.0, 0.72, -0.65 }, Category = "Engine" },
+                    new() { Id = "cockpit", Title = "Exposed Gated Shifter Artwork", Description = "Fully exposed kinematic titanium gear lever mechanism and analog haute horlogerie clocks.", Position = new[] { -0.3, 0.85, 0.15 }, Category = "Cockpit" },
+                    new() { Id = "aero", Title = "Quad Center Titanium Exhaust", Description = "Signature Pagani ceramic-coated quad exhaust tuned to resonate like a Stradivarius violin.", Position = new[] { 0.0, 0.75, -1.8 }, Category = "Aero" },
+                    new() { Id = "brakes", Title = "Carbo-Ceramic Brems Monolith", Description = "Turbine aerodynamic carbon wheel covers that extract hot air away from the carbon ceramic discs.", Position = new[] { 0.94, 0.35, 1.2 }, Category = "Wheels" }
+                },
+                Highlights = new List<string> { "Only 99 Units Worldwide", "Carbo-Titanium HP62 G2 Monocoque", "Analog Swiss Watchmaker Gauges", "Dry Weight of Just 1,280 kg" }
+            },
+            new CarModel
+            {
+                Id = "porsche-gt3rs",
+                Name = "Porsche 911 GT3 RS (992)",
+                Brand = "Porsche",
+                Tagline = "Born on the Track, Road-Legal Weaponry",
+                StartingPrice = 241300,
+                Engine = "4.0L High-Revving Naturally Aspirated Flat-6",
+                Horsepower = 525,
+                TopSpeedKmh = 296,
+                ZeroToHundredSeconds = 3.2,
+                TorqueNm = 465,
+                Transmission = "7-Speed Dual-Clutch PDK",
+                WeightKg = 1450,
+                DriveType = "Rear-Wheel Drive (RWD)",
+                Description = "A radical motorsport projectile. Equipped with central radiator concept, Formula 1 style Drag Reduction System (DRS), and 860 kg of downforce.",
+                StockCount = 3,
+                AvailableColors = new List<ColorOption>
+                {
+                    new() { Name = "Guards Red & Pyro Red Accents", Hex = "#d5001c", Metallic = 0.85, Roughness = 0.18 },
+                    new() { Name = "Shark Blue & Black Satin", Hex = "#006bb6", Metallic = 0.88, Roughness = 0.19 },
+                    new() { Name = "Ice Grey Metallic", Hex = "#d4d8dd", Metallic = 0.94, Roughness = 0.13 },
+                    new() { Name = "Python Green", Hex = "#27ae60", Metallic = 0.86, Roughness = 0.2 },
+                    new() { Name = "Paint-to-Sample Ultraviolet", Hex = "#4a235a", Metallic = 0.9, Roughness = 0.17 }
+                },
+                InteriorThemes = new List<InteriorTheme>
+                {
+                    new() { Name = "Weissach Package Race-Tex & Carbon", PrimaryHex = "#151515", AccentHex = "#d5001c", Material = "Carbon Bucket Seats & Titanium Roll Cage" },
+                    new() { Name = "Black & GT Silver Contrast", PrimaryHex = "#202020", AccentHex = "#silver", Material = "FIA Homologated Lightweight Trim" }
+                },
+                Hotspots = new List<CarHotspot>
+                {
+                    new() { Id = "engine", Title = "9,000 RPM Boxer-6 Engine", Description = "Six individual throttle bodies delivering razor-sharp throttle response without any turbo lag.", Position = new[] { 0.0, 0.65, -1.4 }, Category = "Engine" },
+                    new() { Id = "cockpit", Title = "Motorsport Rotary Dials & Roll Cage", Description = "Four steering-wheel rotary switches for adjusting compression, rebound, diff, and DRS.", Position = new[] { -0.34, 0.86, 0.1 }, Category = "Cockpit" },
+                    new() { Id = "aero", Title = "F1-Derived Active DRS Swan-Neck Wing", Description = "Huge carbon wing higher than the roofline equipped with hydraulic DRS flap opening at high speeds.", Position = new[] { 0.0, 1.25, -1.7 }, Category = "Aero" },
+                    new() { Id = "brakes", Title = "PCCB Ceramic Composite Brakes", Description = "410mm front ceramic discs with monobloc 6-piston yellow racing calipers.", Position = new[] { 0.92, 0.35, 1.15 }, Category = "Wheels" }
+                },
+                Highlights = new List<string> { "860 kg Downforce at 285 km/h", "Drag Reduction System (DRS)", "9,000 RPM Atmospheric Screamer", "Nurburgring Nordschleife 6:49.3" }
+            },
+            new CarModel
+            {
+                Id = "dodge-demon-170",
+                Name = "Dodge Challenger SRT Demon 170",
+                Brand = "Dodge",
+                Tagline = "The Last Muscle King - 1,025 HP Pure American Adrenaline",
+                StartingPrice = 96666,
+                Engine = "6.2L Supercharged HEMI V8 (E85 Blend)",
+                Horsepower = 1025,
+                TopSpeedKmh = 346,
+                ZeroToHundredSeconds = 1.66,
+                TorqueNm = 1281,
+                Transmission = "8-Speed TorqueFlite Automatic with TransBrake",
+                WeightKg = 1941,
+                DriveType = "Rear-Wheel Drive (Drag Optimized RWD)",
+                Description = "The undisputed king of the quarter-mile. 0-60 mph in a terrifying 1.66 seconds, pulling over 2.0 G of acceleration with front wheels lifting into the air.",
+                StockCount = 2,
+                AvailableColors = new List<ColorOption>
+                {
+                    new() { Name = "TorRed with Satin Black Hood", Hex = "#c21807", Metallic = 0.8, Roughness = 0.22 },
+                    new() { Name = "Plum Crazy Purple", Hex = "#5b2c6f", Metallic = 0.9, Roughness = 0.18 },
+                    new() { Name = "Pitch Black Satin", Hex = "#0a0a0a", Metallic = 0.45, Roughness = 0.4 },
+                    new() { Name = "B5 Blue Pearl", Hex = "#1f618d", Metallic = 0.92, Roughness = 0.16 },
+                    new() { Name = "Destroyer Grey", Hex = "#707b7c", Metallic = 0.7, Roughness = 0.25 }
+                },
+                InteriorThemes = new List<InteriorTheme>
+                {
+                    new() { Name = "Demon Black Laguna Leather & Alcantara", PrimaryHex = "#111111", AccentHex = "#c21807", Material = "Laguna Leather with Red Seatbelts" },
+                    new() { Name = "Single Lightweight Driver Seat (Drag Spec)", PrimaryHex = "#0d0d0d", AccentHex = "#ffaa00", Material = "Weight Reduction Fabric" }
+                },
+                Hotspots = new List<CarHotspot>
+                {
+                    new() { Id = "engine", Title = "3.0L Supercharged 1,025 HP HEMI V8", Description = "Massive 3.0-liter IHI twin-screw supercharger delivering 21.3 psi of boost on E85 fuel.", Position = new[] { 0.0, 0.75, 1.0 }, Category = "Engine" },
+                    new() { Id = "cockpit", Title = "SRT Performance Pages & TransBrake 2.0", Description = "Drag telemetry, line-lock, launch control RPM adjustments, and real-time dyno graphs.", Position = new[] { -0.36, 0.88, -0.1 }, Category = "Cockpit" },
+                    new() { Id = "aero", Title = "Air-Grabber Hood Scoop & Parachute Mount", Description = "World's largest functional factory hood scoop with integrated SRT Power Chiller.", Position = new[] { 0.0, 0.85, 1.4 }, Category = "Aero" },
+                    new() { Id = "brakes", Title = "Mickey Thompson ET Street R Drag Radials", Description = "Massive 315/50R17 street-legal drag slicks mounted on lightweight forged aluminum wheels.", Position = new[] { 0.96, 0.38, -1.3 }, Category = "Wheels" }
+                },
+                Highlights = new List<string> { "0-60 MPH in 1.66 Seconds", "1,025 HP & 945 lb-ft Torque", "TransBrake 2.0 Launch System", "NHRA 8.91-sec 1/4 Mile Certified" }
+            }
+        };
+    }
+
+    public List<CarModel> GetAllCars() => _cars;
+
+    public CarModel? GetCarById(string id) =>
+        _cars.FirstOrDefault(c => c.Id.Equals(id, StringComparison.OrdinalIgnoreCase));
+
+    public List<string> GetBrands() =>
+        _cars.Select(c => c.Brand).Distinct().ToList();
+
+    public bool AddTestDrive(TestDriveRequest request)
+    {
+        _testDrives.Add(request);
+        return true;
+    }
+
+    public List<TestDriveRequest> GetTestDrives() => _testDrives;
+
+    public bool AddCustomBuild(CustomBuildRequest request)
+    {
+        _customBuilds.Add(request);
+        return true;
+    }
+
+    public List<CustomBuildRequest> GetCustomBuilds() => _customBuilds;
+
+    public ShowroomStats GetStats()
+    {
+        return new ShowroomStats
+        {
+            TotalSupercars = _cars.Count,
+            TotalInventoryValue = _cars.Sum(c => c.StartingPrice),
+            ActiveShowroomViewers = 42,
+            BookedTestDrivesCount = _testDrives.Count + 18,
+            ConciergeOnline = true,
+            VirtualShowroomVersion = "3.2 WebGL HDR (Three.js & .NET 10)"
+        };
+    }
+}

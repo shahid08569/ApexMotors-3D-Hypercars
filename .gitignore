@@ -1,0 +1,14 @@
+# Build and Environment
+bin/
+obj/
+node_modules/
+dist/
+.angular/
+.vscode/
+.idea/
+*.user
+*.suo
+*.log
+.env
+.DS_Store
+Thumbs.db
