@@ -54,8 +54,8 @@ export class ThreeShowroomService {
 
     // 1. Scene
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x080a0f);
-    this.scene.fog = new THREE.FogExp2(0x080a0f, 0.035);
+    this.scene.background = new THREE.Color(0x111416);
+    this.scene.fog = new THREE.FogExp2(0x111416, 0.035);
 
     // 2. Camera
     const width = this.canvas.clientWidth || window.innerWidth;
@@ -105,10 +105,10 @@ export class ThreeShowroomService {
   }
 
   private setupLighting(): void {
-    this.ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+    this.ambientLight = new THREE.AmbientLight(0xfff8ee, 0.75);
     this.scene.add(this.ambientLight);
 
-    this.keySpotLight = new THREE.SpotLight(0xffffff, 2.8);
+    this.keySpotLight = new THREE.SpotLight(0xfff3e0, 2.8);
     this.keySpotLight.position.set(5, 7.5, 5);
     this.keySpotLight.angle = Math.PI / 3.8;
     this.keySpotLight.penumbra = 0.65;
@@ -118,11 +118,11 @@ export class ThreeShowroomService {
     this.keySpotLight.shadow.bias = -0.0001;
     this.scene.add(this.keySpotLight);
 
-    this.fillLight = new THREE.DirectionalLight(0x8cb8ff, 1.4);
+    this.fillLight = new THREE.DirectionalLight(0xa7beae, 1.4);
     this.fillLight.position.set(-6, 4, -4);
     this.scene.add(this.fillLight);
 
-    this.rimLight = new THREE.DirectionalLight(0xffecd0, 2.0);
+    this.rimLight = new THREE.DirectionalLight(0xb85042, 1.8);
     this.rimLight.position.set(0, 4.5, -6);
     this.scene.add(this.rimLight);
   }
@@ -131,19 +131,19 @@ export class ThreeShowroomService {
     // Polished Circular Turntable Platform
     const stageGeo = new THREE.CylinderGeometry(4.8, 5.0, 0.16, 64);
     const stageMat = new THREE.MeshStandardMaterial({
-      color: 0x11141a,
-      roughness: 0.12,
-      metalness: 0.88
+      color: 0x181c1e,
+      roughness: 0.14,
+      metalness: 0.85
     });
     this.turntableMesh = new THREE.Mesh(stageGeo, stageMat);
     this.turntableMesh.position.y = -0.08;
     this.turntableMesh.receiveShadow = true;
     this.scene.add(this.turntableMesh);
 
-    // Glowing Cyan Outer Ring
+    // Glowing Terracotta Outer Ring (#b85042)
     const ringGeo = new THREE.RingGeometry(4.82, 4.96, 64);
     const ringMat = new THREE.MeshBasicMaterial({
-      color: 0x00d4ff,
+      color: 0xb85042,
       side: THREE.DoubleSide
     });
     const neonRing = new THREE.Mesh(ringGeo, ringMat);
@@ -154,7 +154,7 @@ export class ThreeShowroomService {
     // Softbox Light Panel overhead
     const softboxGeo = new THREE.PlaneGeometry(6.5, 4.2);
     const softboxMat = new THREE.MeshBasicMaterial({
-      color: 0xffffff,
+      color: 0xe7e8d1,
       side: THREE.DoubleSide
     });
     this.ceilingSoftbox = new THREE.Mesh(softboxGeo, softboxMat);
@@ -162,10 +162,10 @@ export class ThreeShowroomService {
     this.ceilingSoftbox.position.set(0, 5.2, 0);
     this.scene.add(this.ceilingSoftbox);
 
-    // Floor Cyber Grid
-    this.floorGrid = new THREE.GridHelper(26, 26, 0x00d4ff, 0x162438);
+    // Floor Grid (#a7beae / sage)
+    this.floorGrid = new THREE.GridHelper(26, 26, 0xb85042, 0x242d2a);
     this.floorGrid.position.y = -0.085;
-    this.floorGrid.material.opacity = 0.4;
+    this.floorGrid.material.opacity = 0.45;
     this.floorGrid.material.transparent = true;
     this.scene.add(this.floorGrid);
   }
@@ -590,8 +590,8 @@ export class ThreeShowroomService {
 
     const caliperGeo = new THREE.BoxGeometry(0.06, 0.12, 0.08);
     const caliperMat = new THREE.MeshStandardMaterial({
-      color: 0xffcc00,
-      metalness: 0.7,
+      color: 0xb85042,
+      metalness: 0.8,
       roughness: 0.2
     });
     const caliper = new THREE.Mesh(caliperGeo, caliperMat);
@@ -607,26 +607,26 @@ export class ThreeShowroomService {
     canvas.height = 256;
     const ctx = canvas.getContext('2d');
     if (ctx) {
-      ctx.fillStyle = '#05070a';
+      ctx.fillStyle = '#111416';
       ctx.fillRect(0, 0, 512, 256);
 
-      ctx.strokeStyle = '#00d4ff';
+      ctx.strokeStyle = '#b85042';
       ctx.lineWidth = 4;
       ctx.strokeRect(10, 10, 492, 236);
 
-      ctx.fillStyle = '#ffffff';
+      ctx.fillStyle = '#e7e8d1';
       ctx.font = 'bold 74px monospace';
       ctx.textAlign = 'center';
       ctx.fillText(`${car.topSpeedKmh}`, 256, 120);
 
-      ctx.fillStyle = '#00d4ff';
+      ctx.fillStyle = '#a7beae';
       ctx.font = '22px sans-serif';
       ctx.fillText('KM/H  |  GEAR 7  |  RACE MODE', 256, 160);
 
-      ctx.fillStyle = '#ff2200';
+      ctx.fillStyle = '#b85042';
       ctx.fillRect(50, 190, 412, 14);
 
-      ctx.fillStyle = '#aaaaaa';
+      ctx.fillStyle = '#e7e8d1';
       ctx.font = 'bold 18px sans-serif';
       ctx.fillText(car.name.toUpperCase(), 256, 45);
     }

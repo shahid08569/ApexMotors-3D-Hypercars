@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#b85042" />
+      <stop offset="100%" stop-color="#8a3024" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e7e8d1" />
+      <stop offset="100%" stop-color="#a7beae" />
+    </linearGradient>
+  </defs>
+  <polygon points="32,4 58,14 52,48 32,60 12,48 6,14" fill="url(#shieldGrad)" stroke="#e7e8d1" stroke-width="2"/>
+  <path d="M32,16 L44,42 L32,36 L20,42 Z" fill="url(#accentGrad)" />
+  <circle cx="32" cy="28" r="3" fill="#b85042" />
+</svg>

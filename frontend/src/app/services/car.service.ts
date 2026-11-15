@@ -28,11 +28,11 @@ const FALLBACK_CARS: CarModel[] = [
     ],
     stockCount: 2,
     availableColors: [
-      { name: 'Rosso Corsa (Classic Red)', hex: '#dc0616', metallic: 0.88, roughness: 0.18 },
-      { name: 'Giallo Modena (Canary Yellow)', hex: '#f7d002', metallic: 0.85, roughness: 0.2 },
-      { name: 'Nero Daytona (Metallic Black)', hex: '#151516', metallic: 0.95, roughness: 0.15 },
-      { name: 'Blu Tour de France (Deep Blue)', hex: '#122a5e', metallic: 0.9, roughness: 0.18 },
-      { name: 'Argento Nurburgring (Silver Frost)', hex: '#c5c8cb', metallic: 0.96, roughness: 0.12 }
+      { name: 'Terracotta Corsa', hex: '#b85042', metallic: 0.9, roughness: 0.16 },
+      { name: 'Parchment Silk', hex: '#e7e8d1', metallic: 0.8, roughness: 0.2 },
+      { name: 'Heritage Sage', hex: '#a7beae', metallic: 0.85, roughness: 0.18 },
+      { name: 'Nero Daytona', hex: '#151516', metallic: 0.95, roughness: 0.15 },
+      { name: 'Giallo Modena', hex: '#f7d002', metallic: 0.85, roughness: 0.2 }
     ],
     interiorThemes: [
       { name: 'Cuoio Leather & Carbon', primaryHex: '#b6773a', accentHex: '#1a1a1a', material: 'Poltrona Frau Leather' },

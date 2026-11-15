@@ -1,1 +1,49 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --color-primary: #b85042;
+  --color-primary-dark: #8e382d;
+  --color-primary-glow: rgba(184, 80, 66, 0.35);
+
+  --color-cream: #e7e8d1;
+  --color-cream-soft: rgba(231, 232, 209, 0.75);
+  --color-cream-dim: rgba(231, 232, 209, 0.12);
+
+  --color-sage: #a7beae;
+  --color-sage-soft: rgba(167, 190, 174, 0.3);
+  --color-sage-glow: rgba(167, 190, 174, 0.4);
+
+  --bg-deep: #111416;
+  --bg-surface: #181c1e;
+  --bg-surface-elevated: #202528;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 90px;
+  background-color: var(--bg-deep);
+  color: var(--color-cream);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-deep);
+  color: var(--color-cream);
+  font-family: 'Outfit', sans-serif;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Custom Luxury Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #111416;
+}
+::-webkit-scrollbar-thumb {
+  background: #333a3e;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}

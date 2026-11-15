@@ -37,11 +37,11 @@ public class CarRepository
                 StockCount = 2,
                 AvailableColors = new List<ColorOption>
                 {
-                    new() { Name = "Rosso Corsa (Classic Red)", Hex = "#dc0616", Metallic = 0.88, Roughness = 0.18 },
-                    new() { Name = "Giallo Modena (Canary Yellow)", Hex = "#f7d002", Metallic = 0.85, Roughness = 0.2 },
-                    new() { Name = "Nero Daytona (Metallic Black)", Hex = "#151516", Metallic = 0.95, Roughness = 0.15 },
-                    new() { Name = "Blu Tour de France (Deep Blue)", Hex = "#122a5e", Metallic = 0.9, Roughness = 0.18 },
-                    new() { Name = "Argento Nurburgring (Silver Frost)", Hex = "#c5c8cb", Metallic = 0.96, Roughness = 0.12 }
+                    new() { Name = "Terracotta Corsa", Hex = "#b85042", Metallic = 0.9, Roughness = 0.16 },
+                    new() { Name = "Parchment Silk", Hex = "#e7e8d1", Metallic = 0.8, Roughness = 0.2 },
+                    new() { Name = "Heritage Sage", Hex = "#a7beae", Metallic = 0.85, Roughness = 0.18 },
+                    new() { Name = "Nero Daytona", Hex = "#151516", Metallic = 0.95, Roughness = 0.15 },
+                    new() { Name = "Giallo Modena", Hex = "#f7d002", Metallic = 0.85, Roughness = 0.2 }
                 },
                 InteriorThemes = new List<InteriorTheme>
                 {
