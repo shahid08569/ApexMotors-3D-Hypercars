@@ -82,6 +82,7 @@ export class ThreeShowroomService {
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enableDamping = true;
     this.controls.dampingFactor = 0.05;
+    this.controls.enableZoom = false; // Prevents mouse wheel scroll hijacking so page scrolls ultra-smoothly!
     this.controls.maxPolarAngle = Math.PI / 2 - 0.02;
     this.controls.minDistance = 0.4;
     this.controls.maxDistance = 14;

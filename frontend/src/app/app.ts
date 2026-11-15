@@ -46,6 +46,8 @@ export class App implements OnInit, AfterViewInit, OnDestroy {
   public isRevving = signal<boolean>(false);
   public isCustomizerOpen = signal<boolean>(true);
   public is3DReady = signal<boolean>(false);
+  public isCockpitRealViewOpen = signal<boolean>(false);
+  public cockpitZoomLevel = signal<number>(1.0);
 
   // Modals
   public isTestDriveModalOpen = signal<boolean>(false);
@@ -170,6 +172,18 @@ export class App implements OnInit, AfterViewInit, OnDestroy {
     this.customBuildForm.colorName = color.name;
     this.customBuildForm.colorHex = color.hex;
     this.threeShowroom.setPaintColor(color.hex, color.metallic, color.roughness);
+    this.audioService.playClick();
+  }
+
+  public toggleCockpitRealView(): void {
+    const nextState = !this.isCockpitRealViewOpen();
+    this.isCockpitRealViewOpen.set(nextState);
+    this.cockpitZoomLevel.set(1.0);
+    this.audioService.playClick();
+  }
+
+  public setCockpitZoom(level: number): void {
+    this.cockpitZoomLevel.set(level);
     this.audioService.playClick();
   }
 

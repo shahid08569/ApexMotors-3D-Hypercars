@@ -28,7 +28,8 @@ public class CarRepository
                 WeightKg = 1570,
                 DriveType = "e-4WD (All-Wheel Drive)",
                 Description = "The SF90 Stradale represents an epochal leap for Ferrari: hypercar performance married to groundbreaking hybrid plug-in engineering.",
-                ImageUrl = "https://images.unsplash.com/photo-1592198084033-aade902d1aae?auto=format&fit=crop&w=1200&q=80",
+                ImageUrl = "https://images.unsplash.com/photo-1592198084033-aade902d1aae?auto=format&fit=crop&w=1600&q=85",
+                InteriorImageUrl = "https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=2000&q=90",
                 GalleryUrls = new()
                 {
                     "https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=800&q=80",
@@ -46,7 +47,7 @@ public class CarRepository
                 InteriorThemes = new List<InteriorTheme>
                 {
                     new() { Name = "Cuoio Leather & Carbon", PrimaryHex = "#b6773a", AccentHex = "#1a1a1a", Material = "Poltrona Frau Leather" },
-                    new() { Name = "Nero Alcantara Rosso Stitch", PrimaryHex = "#1c1c1c", AccentHex = "#dc0616", Material = "Racing Alcantara" }
+                    new() { Name = "Nero Alcantara Rosso Stitch", PrimaryHex = "#1c1c1c", AccentHex = "#b85042", Material = "Racing Alcantara" }
                 },
                 Hotspots = new List<CarHotspot>
                 {
@@ -73,7 +74,8 @@ public class CarRepository
                 WeightKg = 1772,
                 DriveType = "E-AWD Electric Vectoring",
                 Description = "A breathtaking revolution: pure naturally aspirated screaming V12 revving to 9,500 RPM blended with futuristic electric torque-vectoring prowess.",
-                ImageUrl = "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=1200&q=80",
+                ImageUrl = "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=1600&q=85",
+                InteriorImageUrl = "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=2000&q=90",
                 GalleryUrls = new()
                 {
                     "https://images.unsplash.com/photo-1541348263662-e0c8de4259ba?auto=format&fit=crop&w=800&q=80"
@@ -81,11 +83,11 @@ public class CarRepository
                 StockCount = 1,
                 AvailableColors = new List<ColorOption>
                 {
-                    new() { Name = "Verde Mantis (Neon Green)", Hex = "#00e653", Metallic = 0.82, Roughness = 0.19 },
-                    new() { Name = "Arancio Apodis (Fiery Orange)", Hex = "#ff5500", Metallic = 0.9, Roughness = 0.15 },
-                    new() { Name = "Giallo Auge (Solar Yellow)", Hex = "#f5d100", Metallic = 0.86, Roughness = 0.18 },
-                    new() { Name = "Blu Cepheus (Electric Cyan)", Hex = "#00b4d8", Metallic = 0.92, Roughness = 0.16 },
-                    new() { Name = "Grigio Titans (Matte Stealth)", Hex = "#38383a", Metallic = 0.4, Roughness = 0.45 }
+                    new() { Name = "Terracotta Corsa", Hex = "#b85042", Metallic = 0.9, Roughness = 0.16 },
+                    new() { Name = "Verde Mantis", Hex = "#00e653", Metallic = 0.82, Roughness = 0.19 },
+                    new() { Name = "Heritage Sage", Hex = "#a7beae", Metallic = 0.85, Roughness = 0.18 },
+                    new() { Name = "Parchment Silk", Hex = "#e7e8d1", Metallic = 0.8, Roughness = 0.2 },
+                    new() { Name = "Grigio Titans", Hex = "#38383a", Metallic = 0.4, Roughness = 0.45 }
                 },
                 InteriorThemes = new List<InteriorTheme>
                 {
@@ -117,7 +119,8 @@ public class CarRepository
                 WeightKg = 1995,
                 DriveType = "Permanent All-Wheel Drive",
                 Description = "A masterpiece with no equal on earth. Engineered to effortlessly shatter physical boundaries while wrapped in handcrafted haute-couture luxury.",
-                ImageUrl = "https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?auto=format&fit=crop&w=1200&q=80",
+                ImageUrl = "https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?auto=format&fit=crop&w=1600&q=85",
+                InteriorImageUrl = "https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=2000&q=90",
                 GalleryUrls = new()
                 {
                     "https://images.unsplash.com/photo-1508974239320-0a029497e820?auto=format&fit=crop&w=800&q=80"
@@ -125,10 +128,10 @@ public class CarRepository
                 StockCount = 1,
                 AvailableColors = new List<ColorOption>
                 {
-                    new() { Name = "French Racing Blue & Atlantic Blue", Hex = "#1e4d94", Metallic = 0.9, Roughness = 0.17 },
-                    new() { Name = "Bugatti Jet Black & Tangerine", Hex = "#0f1012", Metallic = 0.95, Roughness = 0.14 },
-                    new() { Name = "Nocturne Carbon & Copper", Hex = "#2c2826", Metallic = 0.88, Roughness = 0.22 },
-                    new() { Name = "Glacier White & Royal Dark Blue", Hex = "#f2f3f5", Metallic = 0.75, Roughness = 0.2 }
+                    new() { Name = "Parchment Silk", Hex = "#e7e8d1", Metallic = 0.85, Roughness = 0.17 },
+                    new() { Name = "Terracotta Corsa", Hex = "#b85042", Metallic = 0.9, Roughness = 0.16 },
+                    new() { Name = "French Racing Blue", Hex = "#1e4d94", Metallic = 0.9, Roughness = 0.17 },
+                    new() { Name = "Heritage Sage", Hex = "#a7beae", Metallic = 0.85, Roughness = 0.18 }
                 },
                 InteriorThemes = new List<InteriorTheme>
                 {
@@ -160,7 +163,8 @@ public class CarRepository
                 WeightKg = 1280,
                 DriveType = "Rear-Wheel Drive (RWD)",
                 Description = "Crafted by Horacio Pagani as an immortal work of art, defying screens and digital trends with exposed manual gear linkages and Carbo-Titanium metallurgy.",
-                ImageUrl = "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1200&q=80",
+                ImageUrl = "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1600&q=85",
+                InteriorImageUrl = "https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=2000&q=90",
                 GalleryUrls = new()
                 {
                     "https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=800&q=80"
@@ -169,9 +173,9 @@ public class CarRepository
                 AvailableColors = new List<ColorOption>
                 {
                     new() { Name = "Rinascimento Gold", Hex = "#c89a4b", Metallic = 0.96, Roughness = 0.15 },
-                    new() { Name = "Blue Carbon Weave", Hex = "#13233a", Metallic = 0.8, Roughness = 0.25 },
-                    new() { Name = "Bianco Benny (Pearlescent White)", Hex = "#f5f6f8", Metallic = 0.7, Roughness = 0.18 },
-                    new() { Name = "Rosso Dubai (Velvet Ruby)", Hex = "#8a031e", Metallic = 0.92, Roughness = 0.16 }
+                    new() { Name = "Terracotta Corsa", Hex = "#b85042", Metallic = 0.9, Roughness = 0.16 },
+                    new() { Name = "Heritage Sage", Hex = "#a7beae", Metallic = 0.85, Roughness = 0.18 },
+                    new() { Name = "Parchment Silk", Hex = "#e7e8d1", Metallic = 0.8, Roughness = 0.2 }
                 },
                 InteriorThemes = new List<InteriorTheme>
                 {
@@ -203,7 +207,8 @@ public class CarRepository
                 WeightKg = 1450,
                 DriveType = "Rear-Wheel Drive (RWD)",
                 Description = "A radical motorsport projectile. Equipped with central radiator concept, Formula 1 style Drag Reduction System (DRS), and 860 kg of downforce.",
-                ImageUrl = "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1200&q=80",
+                ImageUrl = "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1600&q=85",
+                InteriorImageUrl = "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=2000&q=90",
                 GalleryUrls = new()
                 {
                     "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80"
@@ -211,16 +216,15 @@ public class CarRepository
                 StockCount = 3,
                 AvailableColors = new List<ColorOption>
                 {
-                    new() { Name = "Guards Red & Pyro Red Accents", Hex = "#d5001c", Metallic = 0.85, Roughness = 0.18 },
-                    new() { Name = "Shark Blue & Black Satin", Hex = "#006bb6", Metallic = 0.88, Roughness = 0.19 },
-                    new() { Name = "Ice Grey Metallic", Hex = "#d4d8dd", Metallic = 0.94, Roughness = 0.13 },
-                    new() { Name = "Python Green", Hex = "#27ae60", Metallic = 0.86, Roughness = 0.2 },
-                    new() { Name = "Paint-to-Sample Ultraviolet", Hex = "#4a235a", Metallic = 0.9, Roughness = 0.17 }
+                    new() { Name = "Terracotta Corsa", Hex = "#b85042", Metallic = 0.9, Roughness = 0.16 },
+                    new() { Name = "Parchment Silk", Hex = "#e7e8d1", Metallic = 0.85, Roughness = 0.18 },
+                    new() { Name = "Heritage Sage", Hex = "#a7beae", Metallic = 0.88, Roughness = 0.18 },
+                    new() { Name = "Shark Blue", Hex = "#006bb6", Metallic = 0.88, Roughness = 0.19 }
                 },
                 InteriorThemes = new List<InteriorTheme>
                 {
-                    new() { Name = "Weissach Package Race-Tex & Carbon", PrimaryHex = "#151515", AccentHex = "#d5001c", Material = "Carbon Bucket Seats & Titanium Roll Cage" },
-                    new() { Name = "Black & GT Silver Contrast", PrimaryHex = "#202020", AccentHex = "#c0c0c0", Material = "FIA Homologated Lightweight Trim" }
+                    new() { Name = "Weissach Package Race-Tex & Carbon", PrimaryHex = "#151515", AccentHex = "#b85042", Material = "Carbon Bucket Seats & Titanium Roll Cage" },
+                    new() { Name = "Black & GT Silver Contrast", PrimaryHex = "#202020", AccentHex = "#e7e8d1", Material = "FIA Homologated Lightweight Trim" }
                 },
                 Hotspots = new List<CarHotspot>
                 {
@@ -247,7 +251,8 @@ public class CarRepository
                 WeightKg = 1941,
                 DriveType = "Rear-Wheel Drive (Drag Optimized RWD)",
                 Description = "The undisputed king of the quarter-mile. 0-60 mph in a terrifying 1.66 seconds, pulling over 2.0 G of acceleration with front wheels lifting into the air.",
-                ImageUrl = "https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=1200&q=80",
+                ImageUrl = "https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=1600&q=85",
+                InteriorImageUrl = "https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=2000&q=90",
                 GalleryUrls = new()
                 {
                     "https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=800&q=80"
@@ -255,16 +260,15 @@ public class CarRepository
                 StockCount = 2,
                 AvailableColors = new List<ColorOption>
                 {
-                    new() { Name = "TorRed with Satin Black Hood", Hex = "#c21807", Metallic = 0.8, Roughness = 0.22 },
-                    new() { Name = "Plum Crazy Purple", Hex = "#5b2c6f", Metallic = 0.9, Roughness = 0.18 },
-                    new() { Name = "Pitch Black Satin", Hex = "#0a0a0a", Metallic = 0.45, Roughness = 0.4 },
-                    new() { Name = "B5 Blue Pearl", Hex = "#1f618d", Metallic = 0.92, Roughness = 0.16 },
-                    new() { Name = "Destroyer Grey", Hex = "#707b7c", Metallic = 0.7, Roughness = 0.25 }
+                    new() { Name = "Terracotta Corsa", Hex = "#b85042", Metallic = 0.9, Roughness = 0.16 },
+                    new() { Name = "Parchment Silk", Hex = "#e7e8d1", Metallic = 0.8, Roughness = 0.2 },
+                    new() { Name = "Heritage Sage", Hex = "#a7beae", Metallic = 0.85, Roughness = 0.18 },
+                    new() { Name = "Pitch Black Satin", Hex = "#0a0a0a", Metallic = 0.45, Roughness = 0.4 }
                 },
                 InteriorThemes = new List<InteriorTheme>
                 {
-                    new() { Name = "Demon Black Laguna Leather & Alcantara", PrimaryHex = "#111111", AccentHex = "#c21807", Material = "Laguna Leather with Red Seatbelts" },
-                    new() { Name = "Single Lightweight Driver Seat (Drag Spec)", PrimaryHex = "#0d0d0d", AccentHex = "#ffaa00", Material = "Weight Reduction Fabric" }
+                    new() { Name = "Demon Black Laguna Leather & Alcantara", PrimaryHex = "#111111", AccentHex = "#b85042", Material = "Laguna Leather with Red Seatbelts" },
+                    new() { Name = "Single Lightweight Driver Seat (Drag Spec)", PrimaryHex = "#0d0d0d", AccentHex = "#a7beae", Material = "Weight Reduction Fabric" }
                 },
                 Hotspots = new List<CarHotspot>
                 {

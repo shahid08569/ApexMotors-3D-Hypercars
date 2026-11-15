@@ -21,7 +21,8 @@ const FALLBACK_CARS: CarModel[] = [
     weightKg: 1570,
     driveType: 'e-4WD (All-Wheel Drive)',
     description: 'The SF90 Stradale represents an epochal leap for Ferrari: hypercar performance married to groundbreaking hybrid plug-in engineering.',
-    imageUrl: 'https://images.unsplash.com/photo-1592198084033-aade902d1aae?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1592198084033-aade902d1aae?auto=format&fit=crop&w=1600&q=85',
+    interiorImageUrl: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=2000&q=90',
     galleryUrls: [
       'https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80'
@@ -36,7 +37,7 @@ const FALLBACK_CARS: CarModel[] = [
     ],
     interiorThemes: [
       { name: 'Cuoio Leather & Carbon', primaryHex: '#b6773a', accentHex: '#1a1a1a', material: 'Poltrona Frau Leather' },
-      { name: 'Nero Alcantara Rosso Stitch', primaryHex: '#1c1c1c', accentHex: '#dc0616', material: 'Racing Alcantara' }
+      { name: 'Nero Alcantara Rosso Stitch', primaryHex: '#1c1c1c', accentHex: '#b85042', material: 'Racing Alcantara' }
     ],
     hotspots: [
       { id: 'engine', title: '1,000 HP Hybrid Powertrain', description: 'Twin-Turbocharged 4.0L V8 coupled with 3 electric motors generating instant torque from 0 RPM.', position: [0.0, 0.7, -0.6], category: 'Engine' },
@@ -62,17 +63,18 @@ const FALLBACK_CARS: CarModel[] = [
     weightKg: 1772,
     driveType: 'E-AWD Electric Vectoring',
     description: 'A breathtaking revolution: pure naturally aspirated screaming V12 revving to 9,500 RPM blended with futuristic electric torque-vectoring prowess.',
-    imageUrl: 'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=1600&q=85',
+    interiorImageUrl: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=2000&q=90',
     galleryUrls: [
       'https://images.unsplash.com/photo-1541348263662-e0c8de4259ba?auto=format&fit=crop&w=800&q=80'
     ],
     stockCount: 1,
     availableColors: [
-      { name: 'Verde Mantis (Neon Green)', hex: '#00e653', metallic: 0.82, roughness: 0.19 },
-      { name: 'Arancio Apodis (Fiery Orange)', hex: '#ff5500', metallic: 0.9, roughness: 0.15 },
-      { name: 'Giallo Auge (Solar Yellow)', hex: '#f5d100', metallic: 0.86, roughness: 0.18 },
-      { name: 'Blu Cepheus (Electric Cyan)', hex: '#00b4d8', metallic: 0.92, roughness: 0.16 },
-      { name: 'Grigio Titans (Matte Stealth)', hex: '#38383a', metallic: 0.4, roughness: 0.45 }
+      { name: 'Terracotta Corsa', hex: '#b85042', metallic: 0.9, roughness: 0.16 },
+      { name: 'Verde Mantis', hex: '#00e653', metallic: 0.82, roughness: 0.19 },
+      { name: 'Heritage Sage', hex: '#a7beae', metallic: 0.85, roughness: 0.18 },
+      { name: 'Parchment Silk', hex: '#e7e8d1', metallic: 0.8, roughness: 0.2 },
+      { name: 'Grigio Titans', hex: '#38383a', metallic: 0.4, roughness: 0.45 }
     ],
     interiorThemes: [
       { name: 'Corsia Arancio Sportivo', primaryHex: '#181818', accentHex: '#ff5500', material: 'CarbonSkin & Alcantara' },
@@ -102,16 +104,17 @@ const FALLBACK_CARS: CarModel[] = [
     weightKg: 1995,
     driveType: 'Permanent All-Wheel Drive',
     description: 'A masterpiece with no equal on earth. Engineered to effortlessly shatter physical boundaries while wrapped in handcrafted haute-couture luxury.',
-    imageUrl: 'https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?auto=format&fit=crop&w=1600&q=85',
+    interiorImageUrl: 'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=2000&q=90',
     galleryUrls: [
       'https://images.unsplash.com/photo-1508974239320-0a029497e820?auto=format&fit=crop&w=800&q=80'
     ],
     stockCount: 1,
     availableColors: [
-      { name: 'French Racing Blue & Atlantic Blue', hex: '#1e4d94', metallic: 0.9, roughness: 0.17 },
-      { name: 'Bugatti Jet Black & Tangerine', hex: '#0f1012', metallic: 0.95, roughness: 0.14 },
-      { name: 'Nocturne Carbon & Copper', hex: '#2c2826', metallic: 0.88, roughness: 0.22 },
-      { name: 'Glacier White & Royal Dark Blue', hex: '#f2f3f5', metallic: 0.75, roughness: 0.2 }
+      { name: 'Parchment Silk', hex: '#e7e8d1', metallic: 0.85, roughness: 0.17 },
+      { name: 'Terracotta Corsa', hex: '#b85042', metallic: 0.9, roughness: 0.16 },
+      { name: 'French Racing Blue', hex: '#1e4d94', metallic: 0.9, roughness: 0.17 },
+      { name: 'Heritage Sage', hex: '#a7beae', metallic: 0.85, roughness: 0.18 }
     ],
     interiorThemes: [
       { name: 'Havanna Saddle & Polished Aluminum', primaryHex: '#794628', accentHex: '#d6d6d6', material: 'Full-Grain Bugatti Hide' },
@@ -141,16 +144,17 @@ const FALLBACK_CARS: CarModel[] = [
     weightKg: 1280,
     driveType: 'Rear-Wheel Drive (RWD)',
     description: 'Crafted by Horacio Pagani as an immortal work of art, defying screens and digital trends with exposed manual gear linkages and Carbo-Titanium metallurgy.',
-    imageUrl: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1600&q=85',
+    interiorImageUrl: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=2000&q=90',
     galleryUrls: [
       'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=800&q=80'
     ],
     stockCount: 1,
     availableColors: [
       { name: 'Rinascimento Gold', hex: '#c89a4b', metallic: 0.96, roughness: 0.15 },
-      { name: 'Blue Carbon Weave', hex: '#13233a', metallic: 0.8, roughness: 0.25 },
-      { name: 'Bianco Benny (Pearlescent White)', hex: '#f5f6f8', metallic: 0.7, roughness: 0.18 },
-      { name: 'Rosso Dubai (Velvet Ruby)', hex: '#8a031e', metallic: 0.92, roughness: 0.16 }
+      { name: 'Terracotta Corsa', hex: '#b85042', metallic: 0.9, roughness: 0.16 },
+      { name: 'Heritage Sage', hex: '#a7beae', metallic: 0.85, roughness: 0.18 },
+      { name: 'Parchment Silk', hex: '#e7e8d1', metallic: 0.8, roughness: 0.2 }
     ],
     interiorThemes: [
       { name: 'Vintage Pecan & Machined Aluminum', primaryHex: '#8f572a', accentHex: '#e0e0e0', material: 'Hand-Stitched Italian Leather' },
@@ -180,21 +184,21 @@ const FALLBACK_CARS: CarModel[] = [
     weightKg: 1450,
     driveType: 'Rear-Wheel Drive (RWD)',
     description: 'A radical motorsport projectile. Equipped with central radiator concept, Formula 1 style Drag Reduction System (DRS), and 860 kg of downforce.',
-    imageUrl: 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1600&q=85',
+    interiorImageUrl: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=2000&q=90',
     galleryUrls: [
       'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80'
     ],
     stockCount: 3,
     availableColors: [
-      { name: 'Guards Red & Pyro Red Accents', hex: '#d5001c', metallic: 0.85, roughness: 0.18 },
-      { name: 'Shark Blue & Black Satin', hex: '#006bb6', metallic: 0.88, roughness: 0.19 },
-      { name: 'Ice Grey Metallic', hex: '#d4d8dd', metallic: 0.94, roughness: 0.13 },
-      { name: 'Python Green', hex: '#27ae60', metallic: 0.86, roughness: 0.2 },
-      { name: 'Paint-to-Sample Ultraviolet', hex: '#4a235a', metallic: 0.9, roughness: 0.17 }
+      { name: 'Terracotta Corsa', hex: '#b85042', metallic: 0.9, roughness: 0.16 },
+      { name: 'Parchment Silk', hex: '#e7e8d1', metallic: 0.85, roughness: 0.18 },
+      { name: 'Heritage Sage', hex: '#a7beae', metallic: 0.88, roughness: 0.18 },
+      { name: 'Shark Blue', hex: '#006bb6', metallic: 0.88, roughness: 0.19 }
     ],
     interiorThemes: [
-      { name: 'Weissach Package Race-Tex & Carbon', primaryHex: '#151515', accentHex: '#d5001c', material: 'Carbon Bucket Seats & Titanium Roll Cage' },
-      { name: 'Black & GT Silver Contrast', primaryHex: '#202020', accentHex: '#c0c0c0', material: 'FIA Homologated Lightweight Trim' }
+      { name: 'Weissach Package Race-Tex & Carbon', primaryHex: '#151515', accentHex: '#b85042', material: 'Carbon Bucket Seats & Titanium Roll Cage' },
+      { name: 'Black & GT Silver Contrast', primaryHex: '#202020', accentHex: '#e7e8d1', material: 'FIA Homologated Lightweight Trim' }
     ],
     hotspots: [
       { id: 'engine', title: '9,000 RPM Boxer-6 Engine', description: 'Six individual throttle bodies delivering razor-sharp throttle response without any turbo lag.', position: [0.0, 0.65, -1.4], category: 'Engine' },
@@ -220,21 +224,21 @@ const FALLBACK_CARS: CarModel[] = [
     weightKg: 1941,
     driveType: 'Rear-Wheel Drive (Drag Optimized RWD)',
     description: 'The undisputed king of the quarter-mile. 0-60 mph in a terrifying 1.66 seconds, pulling over 2.0 G of acceleration with front wheels lifting into the air.',
-    imageUrl: 'https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=1600&q=85',
+    interiorImageUrl: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=2000&q=90',
     galleryUrls: [
       'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=800&q=80'
     ],
     stockCount: 2,
     availableColors: [
-      { name: 'TorRed with Satin Black Hood', hex: '#c21807', metallic: 0.8, roughness: 0.22 },
-      { name: 'Plum Crazy Purple', hex: '#5b2c6f', metallic: 0.9, roughness: 0.18 },
-      { name: 'Pitch Black Satin', hex: '#0a0a0a', metallic: 0.45, roughness: 0.4 },
-      { name: 'B5 Blue Pearl', hex: '#1f618d', metallic: 0.92, roughness: 0.16 },
-      { name: 'Destroyer Grey', hex: '#707b7c', metallic: 0.7, roughness: 0.25 }
+      { name: 'Terracotta Corsa', hex: '#b85042', metallic: 0.9, roughness: 0.16 },
+      { name: 'Parchment Silk', hex: '#e7e8d1', metallic: 0.8, roughness: 0.2 },
+      { name: 'Heritage Sage', hex: '#a7beae', metallic: 0.85, roughness: 0.18 },
+      { name: 'Pitch Black Satin', hex: '#0a0a0a', metallic: 0.45, roughness: 0.4 }
     ],
     interiorThemes: [
-      { name: 'Demon Black Laguna Leather & Alcantara', primaryHex: '#111111', accentHex: '#c21807', material: 'Laguna Leather with Red Seatbelts' },
-      { name: 'Single Lightweight Driver Seat (Drag Spec)', primaryHex: '#0d0d0d', accentHex: '#ffaa00', material: 'Weight Reduction Fabric' }
+      { name: 'Demon Black Laguna Leather & Alcantara', primaryHex: '#111111', accentHex: '#b85042', material: 'Laguna Leather with Red Seatbelts' },
+      { name: 'Single Lightweight Driver Seat (Drag Spec)', primaryHex: '#0d0d0d', accentHex: '#a7beae', material: 'Weight Reduction Fabric' }
     ],
     hotspots: [
       { id: 'engine', title: '3.0L Supercharged 1,025 HP HEMI V8', description: 'Massive 3.0-liter IHI twin-screw supercharger delivering 21.3 psi of boost on E85 fuel.', position: [0.0, 0.75, 1.0], category: 'Engine' },

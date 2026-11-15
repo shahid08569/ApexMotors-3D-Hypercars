@@ -38,6 +38,7 @@ export interface CarModel {
   driveType: string;
   description: string;
   imageUrl?: string;
+  interiorImageUrl?: string;
   galleryUrls?: string[];
   stockCount: number;
   availableColors: ColorOption[];

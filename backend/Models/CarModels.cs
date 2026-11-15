@@ -22,8 +22,8 @@ public class CarHotspot
     public string Id { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public double[] Position { get; set; } = Array.Empty<double>(); // [x, y, z]
-    public string Category { get; set; } = string.Empty; // Engine, Aero, Wheels, Cockpit
+    public double[] Position { get; set; } = Array.Empty<double>();
+    public string Category { get; set; } = string.Empty;
 }
 
 public class CarModel
@@ -44,6 +44,7 @@ public class CarModel
     public string DriveType { get; set; } = "AWD";
     public string Description { get; set; } = string.Empty;
     public string ImageUrl { get; set; } = string.Empty;
+    public string InteriorImageUrl { get; set; } = string.Empty;
     public List<string> GalleryUrls { get; set; } = new();
     public int StockCount { get; set; }
     public List<ColorOption> AvailableColors { get; set; } = new();
